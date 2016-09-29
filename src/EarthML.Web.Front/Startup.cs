@@ -28,9 +28,15 @@ namespace EarthML.Web.Front
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Run(async (context) =>
+            app.UseDefaultFiles();
+            app.UseStaticFiles(new StaticFileOptions
             {
-                await context.Response.WriteAsync("Hello World!");
+                ServeUnknownFileTypes = true,
+                OnPrepareResponse = context =>
+                {
+                    context.Context.Response.Headers.Add("Cache-Control", "public, max-age=3600, no-cache");
+
+                }
             });
         }
     }
