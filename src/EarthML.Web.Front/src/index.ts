@@ -1,12 +1,14 @@
 ﻿
 
 const player = document.querySelector("#bg-player") as HTMLIFrameElement;
+const video = document.querySelector("#bg-player") as HTMLVideoElement;
 const videoBG = document.querySelector("#video-background-img") as HTMLDivElement;
+
 
 import * as NProgress from "nprogress"; 
 import Headroom = require("headroom");
- 
-console.log(Headroom); 
+//import Modernizr = require("modernizr"); 
+import "modernizr";
 //import "css!./content/style.less";
 
 const navHeight = 65;
@@ -69,20 +71,73 @@ function post(action, value) {
 var playing = false;
 
 function listener(event) {
-    console.log(event);
+
+
+    if (event.target === video && event.type === "playing") {
+        NProgress.set(0.8);
+       
+        setTimeout(() => {
+            if (!playing) {
+                NProgress.done();
+                player.style.zIndex = "-1";
+                videoBG.style.display = "block";
+                document.querySelector(".logo-content").classList.remove("loading");
+            }
+        }, 500);
+
+    } else if (event.target === video && event.type === "progress") {
+        if (!playing) {
+            NProgress.configure({
+                trickle: false
+            });
+            //   document.querySelector(".video-foreground").classList.add("loading");
+            setTimeout(function () {
+                
+                player.style.zIndex = "1";
+                document.querySelector(".video-foreground").classList.remove("loading");
+
+                playing = true;
+            }, 0);
+        }
+        var loadedPercentage = this.buffered.end(0) / this.duration;
+        console.log(loadedPercentage);
+        if (window.scrollY === 0) {
+            NProgress.set(0.8 + (0.2 * loadedPercentage));
+        } else {
+            NProgress.done();
+        }
+      
+    } else if (event.target === video && event.type === "ended") {
+        player.style.zIndex = "-1";
+        videoBG.style.display = "block";
+        document.querySelector(".logo-content").classList.remove("loading");
+
+        NProgress.done();
+        if (window.scrollY === 0) {
+            scrollTo((document.querySelector("#maincontent") as HTMLElement).offsetTop - navHeight, 600);
+        }
+    }
+
     // Handle messages from the vimeo player only
     if (!(/^https?:\/\/player.vimeo.com/).test(event.origin)) {
         return false;
     }
 
     var data = JSON.parse(event.data);
-    console.log(data);
+  //  console.log(data);
 
     switch (data.event) {
         case 'ready':
             NProgress.set(0.8);
             post('addEventListener', 'playProgress');
-
+            setTimeout(() => {
+                if (!playing) {
+                    NProgress.done();
+                    player.style.zIndex = "-1";
+                    videoBG.style.display = "block";
+                    document.querySelector(".logo-content").classList.remove("loading");
+                }
+            }, 500);
             break;
         case 'playProgress':
 
@@ -97,7 +152,7 @@ function listener(event) {
                 }, 0);
             }
 
-            console.log(data.data.percent);
+         //   console.log(data.data.percent);
             if (data.data.percent === 1) {
 
                 player.style.zIndex = "-1";
@@ -207,7 +262,25 @@ let headroom1 = new Headroom(myElement,
         // callback when moving away from bottom of page, `this` is headroom object
         //  onNotBottom: function () { }
     });
+
+//Modernizr.on('videoautoplay', function (result) {
+//    console.log(result);
+//    if (result) {
+//        // supported
+//    } else {
+//        NProgress.done();
+//        player.style.zIndex = "-1";
+//        videoBG.style.display = "block";
+//        document.querySelector(".logo-content").classList.remove("loading");
+//    }
+//});
+
+
 // initialise
 headroom1.init();
 
-player.src = "https://player.vimeo.com/video/178813739?autoplay=true&background=1&loop=0&api=1";
+video.addEventListener("playing", listener, false);
+video.addEventListener("progress", listener, false);
+video.addEventListener("ended", listener, false);
+//player.src = "https://player.vimeo.com/video/178813739?autoplay=true&background=1&loop=0&api=1";
+

@@ -16,6 +16,9 @@
             shim: {
                 "nprogress": {
                     deps: ["css!libs/nprogress/nprogress.css"]
+                },
+                "modernizr": {
+                    exports: "Modernizr"
                 }
             }
         });
@@ -39,13 +42,14 @@
 
             <div class="contain">
                 <div class="video-background">
-                    <img id="video-background-img" src="imgs/sea-landscape-mountains-nature@0,25x.jpg" style="position: absolute;left:0;right:0;top:0;bottom:0;width:100%;display:none;"
+                    <img id="video-background-img" src="imgs/sea-landscape-mountains-nature@0,25x.jpg" style="position: absolute;left:0;right:0;top:0;bottom:0;width:100%;"
                          srcset="imgs/sea-landscape-mountains-nature.jpg 3000w,
                      imgs/sea-landscape-mountains-nature@0,5x.jpg 1500w,
                      imgs/sea-landscape-mountains-nature@0,25x.jpg 750w" />
 
                     <div class="video-foreground embed-container loading">
-                        <iframe style="z-index:-1" id="bg-player" src="" frameborder="0" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allowfullscreen="allowfullscreen"></iframe>
+                        <video style="z-index:-1" autoplay id="bg-player" src="EarthMlIntro3-SD.mp4"></video>
+                     <!--   <iframe style="z-index:-1" id="bg-player" src="" frameborder="0" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" allowfullscreen="allowfullscreen"></iframe>-->
                     </div>
                 </div>
 

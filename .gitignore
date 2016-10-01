@@ -244,3 +244,4 @@ ModelManifest.xml
 # FAKE - F# Make
 .fake/
 /src/EarthML.Web.Front/wwwroot/libs
+/src/EarthML.Web.Front/Properties/PublishProfiles

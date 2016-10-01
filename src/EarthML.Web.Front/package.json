@@ -18,11 +18,11 @@
     "grunt-contrib-copy": "^1.0.0",
     "grunt-contrib-less": "1.1.0",
     "grunt-front-end-modules": "1.2.2",
+    "grunt-modernizr": "^1.0.2",
     "grunt-npmcopy": "0.1.0",
     "grunt-run": "0.6.0",
     "less-plugin-autoprefix": "1.5.1",
-    "less-plugin-clean-css": "1.5.1",
-    "typescript": "^2.1.0-dev.20160814"
+    "less-plugin-clean-css": "1.5.1"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

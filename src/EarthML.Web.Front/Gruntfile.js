@@ -6,11 +6,12 @@ var fs = require('fs');
 
 module.exports = function (grunt) {
 
-    grunt.loadNpmTasks('grunt-front-end-modules');
+
     grunt.loadNpmTasks('grunt-npmcopy');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-run');
     grunt.loadNpmTasks('grunt-contrib-copy');
+ 
 
     grunt.registerTask("build", ["run:tool","lessDependencis","less"]);
 
@@ -19,7 +20,19 @@ module.exports = function (grunt) {
         console.log("A");
         var modernizr = require("modernizr");
         var done = this.async();
-        modernizr.build({}, function (result) {
+        modernizr.build({
+            
+            "options": [
+              "addTest",
+              "addTest",
+              "setClasses"
+            ],
+            "feature-detects": [
+                "video",
+               "../../../../wwwroot/libs/EarthML/Modernizr/VideoAutoplayTest.js"
+            ],         
+          
+        }, function (result) {
             console.log(result); // the build
            
           
@@ -40,26 +53,26 @@ module.exports = function (grunt) {
 
     grunt.registerTask("lessDependencis", "myLessDependencies", function (l, b) {
         var jsFiles = grunt.file.expand(["wwwroot/libs/EarthML/*.js"], { cwd: "wwwroot/libs/EarthML" });
-        var tester = /define\(\[.*"(css\!.*\.(less|min\.css))".*\],.*/g;
-        var replacer = /(define\(\[.*"css\!.*)(\.less)(".*\],[\s\S]*)/g;
+    
+       
         var lessFiles = {};
         jsFiles.forEach(function (f) {
 
             console.log(f);
             var content = grunt.file.read(f);
-            var bla = tester.exec(content);
+            var bla = /define\(\[.*"(css\!.*\.(less|min\.css))".*\],.*/g.exec(content);
             if (bla) {
                 console.log(bla[1]);
                 var path = f.substr("wwwroot/libs/EarthML/".length);
                 var src = "src/" + path.substr(0, path.lastIndexOf("/") + 1);
                 var relPath = bla[1].substr("css!".length);
-                if (relPath[0] == "." && relPath[1] === "/")
+                if (relPath[0] === "." && relPath[1] === "/")
                     relPath = relPath.substr(2);
 
                 if (relPath.split('.').pop() === "css") {
                     relPath = relPath.substr(0, relPath.lastIndexOf(".", relPath.length - 5)) + ".less";
                 } else {
-                    grunt.file.write(f, content.replace(replacer, "$1.min.css$3"));
+                    grunt.file.write(f, content.replace(/(define\(\[.*"css\!.*)(\.less)(".*\],[\s\S]*)/g, "$1.min.css$3"));
                 }
                 console.log(src + relPath);
                 if (fs.existsSync(src + relPath)) {
@@ -94,6 +107,7 @@ module.exports = function (grunt) {
     });
 
     grunt.initConfig({
+       
         less: {
             default: {
                 options: {
