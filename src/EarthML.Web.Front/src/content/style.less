@@ -96,7 +96,7 @@ footer, header, hgroup, menu, nav, section {
 
 body {
     line-height: 1;
-     transition: background 1s ease;
+    transition: background 1s ease;
 }
 
 ol, ul {
@@ -123,7 +123,7 @@ table {
 }
 
 html {
- //   font-size: 93.75%;
+    //   font-size: 93.75%;
 }
 
 *, *:after, *:before {
@@ -441,7 +441,7 @@ a, a > code {
     max-width: 100%;
 }
 
-.embed-container iframe,.embed-container video, .embed-container object, .embed-container embed {
+.embed-container iframe, .embed-container video, .embed-container object, .embed-container embed {
     position: absolute;
     top: 0;
     left: 0;
@@ -507,7 +507,6 @@ main > header {
     @media (min-aspect-ratio: 16/9) {
         height: 100%;
         overflow: hidden;
-   
     }
 
     @media (max-aspect-ratio: 16/9) {
@@ -546,7 +545,7 @@ main > header {
             /*margin-top: -14%;*/
         }
 
-       
+
 
         @media (min-aspect-ratio: 3/1) {
             margin-top: 0%;
@@ -602,13 +601,12 @@ main > header .scroll-box a {
     padding: 20px;
     box-sizing: content-box;
     border: solid white 1px;
-
 }
 
 .downwardprompt {
     transition: .3s;
     animation: downwardprompt 2s 1s;
-    display:block;
+    display: block;
 }
 
 main > header a#scroll-box:hover {
@@ -617,12 +615,13 @@ main > header a#scroll-box:hover {
 
 
 main {
-    section{
-        border-bottom:solid 1px black;
+    section {
+        border-bottom: solid 1px black;
     }
-    section > div{
+
+    section > div {
         //padding: 30rem;
-        min-height:600px;
+        min-height: 600px;
     }
 }
 
@@ -631,11 +630,11 @@ main {
         transform: translateY(0rem);
         opacity: 1;
     }
+
     50% {
         transform: translateY(1rem);
         opacity: 0.5;
     }
-   
 }
 
 nav.headroom1--top {
@@ -662,11 +661,11 @@ header nav {
     //   font-size: 4rem;
     //   text-transform: uppercase;
     z-index: 100;
-    
-    &.headroom--unpinned, &.headroom1--top
-    {
-        overflow-y:scroll;
+
+    &.headroom--unpinned, &.headroom1--top {
+        overflow-y: scroll;
     }
+
     ul {
         width: 100%;
         text-align: right;
@@ -744,21 +743,25 @@ nav.headroom--top-top .eml-logo .logo {
 
 
 
-@media only screen and (max-width: 640px){
-.show-mobile {
-    display: block!important;
+@media only screen and (max-width: 640px) {
+    .show-mobile {
+        display: block !important;
+    }
+
+    .show-mobile.inline {
+        display: inline-block !important;
+    }
 }
-}
- 
+
 .show-tablet, .show-mobile {
     display: none;
 }
 
 
-@media only screen and (max-width: 640px){
-.hide-mobile {
-    display: none!important;
-}
+@media only screen and (max-width: 640px) {
+    .hide-mobile {
+        display: none !important;
+    }
 }
 
 .hide-tablet, .hide-mobile {
@@ -771,25 +774,27 @@ nav.headroom--top-top .eml-logo .logo {
     line-height: 40px;
 }
 
-@media only screen and (max-width: 640px){
+@media only screen and (max-width: 640px) {
     a:link {
         -webkit-tap-highlight-color: rgba(0,0,0,0);
     }
+
     .dropdown-button {
-    right: -10px;
-}
+        right: -10px;
+    }
 }
 
- 
+
 
 .z1 {
     z-index: 1;
 }
 
-.trigger.menu{
+.trigger.menu {
     height: 40px;
     padding-left: 40px;
 }
+
 .trigger.menu::before {
     position: absolute;
     top: 8px;
@@ -799,21 +804,23 @@ nav.headroom--top-top .eml-logo .logo {
     background: @color-primary-0;
     box-shadow: 0 6px #fff, 0 12px @color-primary-0, 0 18px #fff, 0 24px @color-primary-0;
     content: '';
- 
 }
 
 
-.primary-fill{
-    fill:@color-primary-0;
-}
-.background-primary{
-    background-color:@color-primary-0;
-
+.primary-fill {
+    fill: @color-primary-0;
 }
 
-.mp-level{
-    background-color:@color-primary-0;
+.background-primary {
+    background-color: @color-primary-0;
 
+    .primary-fill {
+        fill: white;
+    }
+}
+
+.mp-level {
+    background-color: @color-primary-0;
 }
 
 
@@ -821,7 +828,7 @@ nav.headroom--top-top .eml-logo .logo {
 
 @import "font-awesome/less/font-awesome.less";
 
-@fa-font-path:        "../../font-awesome/fonts";
+@fa-font-path: "../../font-awesome/fonts";
 
 @import "../../Areas/Blog/Content/article.less";
 @import "../MLPushMenu/content/component.less";
