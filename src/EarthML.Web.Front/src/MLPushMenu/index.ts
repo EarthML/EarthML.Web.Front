@@ -191,6 +191,8 @@ export class MLPushMenu {
         });
     }
 
+    private _deepestLevel;
+
     private _openMenu(subLevel?) {
         // increment level depth
         ++this.level;
@@ -219,6 +221,13 @@ export class MLPushMenu {
         }
         // add class mp-level-open to the opening level element
         classie.add(subLevel || this.levels[0], 'mp-level-open');
+        if (this._deepestLevel) {
+            classie.remove(this._deepestLevel, 'mp-level-deepest-open');
+        }
+        this._deepestLevel = subLevel || this.levels[0];
+        classie.add(this._deepestLevel, 'mp-level-deepest-open');
+
+
     }
 
     // close the menu
