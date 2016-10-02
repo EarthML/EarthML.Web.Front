@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Markdig;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EarthML.Web.Front.Areas.Blog
@@ -46,7 +47,7 @@ namespace EarthML.Web.Front.Areas.Blog
     }
     public class ArticleModel
     {
-        public string Markdown { get; set; }
+        public string MarkdownHtml { get; set; }
         public ArticleMetadata Metadata { get; set; }
 
         public string History { get; set; }
@@ -89,11 +90,12 @@ namespace EarthML.Web.Front.Areas.Blog
             var first = md.IndexOf("---") +3;
             var second = md.IndexOf("---", first);
             var meta = md.Substring(first, second - first).Trim('\n').Split('\n').Select(kv=>kv.Split(':')).ToDictionary(k=>k.First().Trim(),v=>(object)string.Join(":", v.Skip(1)).Trim());
-            md = md.Substring(second+3).Trim('\n');
-
+            md = md.Substring(second + 3).Trim('\n');
+            var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
+            var result = Markdown.ToHtml(md, pipeline);
 
             var model = new ArticleModel {
-                Markdown = md,
+                MarkdownHtml = result,
                 Metadata = meta.ToObject<ArticleMetadata>(),
                 History = System.IO.File.Exists(Path.ChangeExtension(filePath,".history")) ?
                     System.IO.File.ReadAllText(Path.ChangeExtension(filePath, ".history")) :
