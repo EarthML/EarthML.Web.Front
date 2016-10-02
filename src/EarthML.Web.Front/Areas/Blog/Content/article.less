@@ -2,7 +2,7 @@
 
 .article-social-icons {
     margin: 1.84615rem 0;
-
+    text-align:center;
     .social-icons-link {
         width: 30px;
         height: 30px;
@@ -44,8 +44,6 @@
 
 .no-cover .article-open-item {
     position: relative;
-    top: auto;
-    margin-top: 60px;
 }
 
 .article-open-item, .profile-item, .tags-item {
@@ -77,15 +75,14 @@
 
 .article-open-item .article-head, .article-item-first .article-head, .profile-item .article-head, .tags-item .article-head {
     padding-bottom: 0;
-    padding-left: 5%;
-    padding-right: 5%;
 }
 
 .article-head {
     padding-bottom: 4.06154rem;
+       text-align: center;
 }
 
-.footer-subscription, .pagination-pages, .article-head, .profile-item, .tags-item {
+.footer-subscription, .pagination-pages, .profile-item, .tags-item {
     text-align: center;
 }
 
@@ -99,11 +96,94 @@
     color: #cec9c4;
 }
 
+
 article {
     &.single-column {
         width: 700px;
         margin: 0 auto;
     }
+
+    @media (max-width: 767px) {
+        &.single-column {
+            width: auto;
+            margin-left: 5%;
+            margin-right: 5%;
+        }
+
+        .graf--title {
+            margin-top: 31px;
+        }
+
+        .graf--h3 {
+            margin-top: 45px;
+        }
+
+        .graf--title {
+            font-size: 32px;
+            margin-left: -2px;
+            line-height: 1.04;
+            letter-spacing: -.028em;
+        }
+
+        .graf--h3 {
+            font-size: 28px;
+            margin-left: -1.75px;
+            line-height: 1.15;
+            letter-spacing: -.02em;
+        }
+
+        .graf--subtitle.graf-after--h2, .graf--subtitle.graf-after--h3 {
+            margin-top: 5px;
+            margin-bottom: 22px;
+        }
+
+        .graf--h4.graf-after--h3 {
+            margin-top: 23px;
+        }
+
+        .graf--h4 {
+            margin-top: 31px;
+        }
+
+        .graf--subtitle {
+            font-size: 23px;
+            margin-left: -1.44px;
+            line-height: 1.22;
+            letter-spacing: -.022em;
+        }
+
+        .graf--h4 {
+            font-size: 22px;
+            margin-left: -1.38px;
+            line-height: 1.22;
+            letter-spacing: -.018em;
+        }
+
+        .article-content[lang] blockquote, .article-content[lang] li, .article-content[lang] p {
+            -webkit-hyphens: auto;
+            -webkit-hyphenate-limit-before: 2;
+            -webkit-hyphenate-limit-after: 3;
+            -webkit-hyphenate-limit-lines: 2;
+        }
+
+
+        .graf--p.graf-after--h4 {
+            margin-top: 6px;
+        }
+
+        .article-content .p {
+            margin-top: 30px;
+        }
+
+        .article-content p {
+            font-size: 18px;
+            line-height: 1.5;
+            letter-spacing: -.004em;
+        }
+    }
+
+
+
 
 
 
@@ -176,8 +256,12 @@ article {
         color: rgba(0,0,0,.44);
     }
 
-    .graf--subtitle + p, .graf--title + p {
+    .article-content + p {
         margin-top: 10px;
+    }
+
+    .article-content .p {
+        margin-top: 38px;
     }
 
     letter-spacing: .01rem;
