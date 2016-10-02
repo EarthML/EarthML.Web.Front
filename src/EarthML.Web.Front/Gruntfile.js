@@ -13,7 +13,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
  
 
-    grunt.registerTask("build", ["lessDependencis","less","buildModernizer"]);
+    grunt.registerTask("build", ["lessDependencis","less","copy","buildModernizer"]);
 
 
     grunt.registerTask("buildModernizer", function (l, b) {
