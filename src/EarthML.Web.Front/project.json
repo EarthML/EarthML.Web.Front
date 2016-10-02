@@ -46,6 +46,7 @@
       "web.config",
       "Areas/**/*.cshtml",
       "Areas/Blog/Articles/**/*.md",
+      "Areas/Blog/Articles/**/*.history",
       "appsettings.json"
     ]
   },
