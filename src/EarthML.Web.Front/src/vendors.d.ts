@@ -12,6 +12,13 @@ declare module "modernizr" {
     export = Modernizr;
 }
 
+interface Headroom {
+    offset: number;
+}
+interface HeadroomOptions {
+    onUnPin?: () => void;
+}
+
 declare module "headroom" {
     export = Headroom;
 }

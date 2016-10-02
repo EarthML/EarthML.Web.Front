@@ -3,17 +3,17 @@
   "name": "asp.net",
   "private": true,
   "dependencies": {
-    "@types/headroom": "^0.7.26",
+    "@types/headroom": "^0.7.29",
     "@types/modernizr": "^3.2.26",
     "@types/nprogress": "0.0.27",
+    "classie": "1.0.0",
+    "font-awesome": "4.6.3",
     "headroom.js": "0.9.3",
     "modernizr": "3.3.1",
     "nprogress": "0.2.0",
-    "requirejs": "2.2.0",
     "require-css": "0.1.8",
-    "requirejs-text": "2.0.12",
-    "classie": "1.0.0",
-    "font-awesome": "4.6.3"
+    "requirejs": "2.2.0",
+    "requirejs-text": "2.0.12"
   },
   "devDependencies": {
     "grunt": "1.0.1",

@@ -15,7 +15,7 @@ module.exports = function (grunt) {
 
    
     grunt.registerTask("build", ["lessDependencis","less","buildModernizer"]);
-    grunt.registerTask("prepublish", ["npmcopy","copy", "build");
+    grunt.registerTask("prepublish", ["npmcopy","copy", "build"]);
 
     grunt.registerTask("buildModernizer", function (l, b) {
         console.log("A");
