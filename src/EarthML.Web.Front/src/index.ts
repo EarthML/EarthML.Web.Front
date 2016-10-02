@@ -55,8 +55,12 @@ function scrollTo(offsetTop: number, scrollDuration, element: Element = document
 }
 
 document.querySelector("#scrollMainContent").addEventListener("click", (e) => {
-   
-    scrollTo(Math.min((document.querySelector("#maincontent") as HTMLElement).clientHeight,(document.querySelector("#maincontent") as HTMLElement).offsetTop - navHeight)-1, 600, scroller);
+    let scrollValue = (document.querySelector("#maincontent") as HTMLElement).offsetTop - navHeight;
+    if ((document.querySelector("#maincontent") as HTMLElement).clientHeight + 1 <= scrollValue) {
+        scrollValue = (document.querySelector("#maincontent") as HTMLElement).clientHeight;
+    }
+
+    scrollTo(scrollValue, 600, scroller);
 },true);
 
 function post(action, value) {

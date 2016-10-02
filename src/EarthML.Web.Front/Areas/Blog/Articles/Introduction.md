@@ -19,7 +19,9 @@ tags:
 
 
 The vision at EarthML is that we can make machine learning and earth observation usefull to the common user. 
-We love solving problems and creating value and our hardest problem is to find those cases where we can provide real value for our clients.
+In the process of doing so we will be blogging, sharing and helping others to do the same. We believe in a open and transparency profile. 
+By doing so we will share our current challenges for others to learn from and to get feedback from the community to help solve these challenges.
+
 
 
 
