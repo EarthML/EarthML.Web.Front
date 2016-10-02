@@ -5,11 +5,102 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using EarthML.Web.Front.Areas.Blog;
 using Markdig;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EarthML.Web.Front.Areas.Blog
 {
+
+    public class GitCommit
+    {
+        public GitCommit()
+        {
+            Headers = new Dictionary<string, string>();
+            Files = new List<GitFileStatus>();
+            Message = "";
+        }
+
+        public Dictionary<string, string> Headers { get; set; }
+        public string Sha { get; set; }
+        public string Message { get; set; }
+        public List<GitFileStatus> Files { get; set; }
+    }
+    public class GitFileStatus
+    {
+        public string Status { get; set; }
+        public string File { get; set; }
+    }
+
+    public static class GitHelper
+    {
+
+        private static bool StartsWithHeader(string line)
+        {
+            if (line.Length > 0 && char.IsLetter(line[0]))
+            {
+                var seq = line.SkipWhile(ch => Char.IsLetter(ch) && ch != ':');
+                return seq.FirstOrDefault() == ':';
+            }
+            return false;
+        }
+
+        public static IEnumerable<GitCommit> ParseGit(Stream data)
+        {
+            GitCommit commit = null;
+
+            bool processingMessage = false;
+            using (var strReader = new StreamReader(data))
+            {
+                do
+                {
+                    var line = strReader.ReadLine();
+
+                    if (line.StartsWith("commit "))
+                    {
+                        if (commit != null)
+                            yield return commit;
+
+                        commit = new GitCommit();
+                        commit.Sha = line.Split(' ')[1];
+                    }
+
+                    if (StartsWithHeader(line))
+                    {
+                        var header = line.Split(':')[0];
+                        var val = string.Join(":", line.Split(':').Skip(1)).Trim();
+
+                        // headers
+                        commit.Headers.Add(header, val);
+                    }
+
+                    if (string.IsNullOrEmpty(line))
+                    {
+                        // commit message divider
+                        processingMessage = !processingMessage;
+                    }
+
+                    if (line.Length > 0 && line[0] == '\t')
+                    {
+                        // commit message.
+                        commit.Message += line;
+                    }
+
+                    if (line.Length > 1 && Char.IsLetter(line[0]) && line[1] == '\t')
+                    {
+                        var status = line.Split('\t')[0];
+                        var file = line.Split('\t')[1];
+                        commit.Files.Add(new GitFileStatus() { Status = status, File = file });
+                    }
+                }
+                while (strReader.Peek() != -1);
+            }
+            if (commit != null)
+                yield return commit;
+
+        }
+    }
+
 
     public static class ObjectExtensions
     {
@@ -50,17 +141,17 @@ namespace EarthML.Web.Front.Areas.Blog
         public string MarkdownHtml { get; set; }
         public ArticleMetadata Metadata { get; set; }
 
-        public string History { get; set; }
+        public List<GitCommit> History { get; set; }
     }
     public class BlogController : Controller
     {
         [Route("[controller]")]
         public IActionResult Index()
         {
-           
+
             return View();
         }
-         
+
 
         [Route("[controller]/{*article}")]
         public IActionResult ReadArticle(string article)
@@ -87,22 +178,31 @@ namespace EarthML.Web.Front.Areas.Blog
             var filePath = "Areas/Blog/Articles/Introduction.md";
 
             var md = System.IO.File.ReadAllText(filePath);
-            var first = md.IndexOf("---") +3;
+            var first = md.IndexOf("---") + 3;
             var second = md.IndexOf("---", first);
-            var meta = md.Substring(first, second - first).Trim('\n').Split('\n').Select(kv=>kv.Split(':')).ToDictionary(k=>k.First().Trim(),v=>(object)string.Join(":", v.Skip(1)).Trim());
+            var meta = md.Substring(first, second - first).Trim('\n').Split('\n').Select(kv => kv.Split(':')).ToDictionary(k => k.First().Trim(), v => (object)string.Join(":", v.Skip(1)).Trim());
             md = md.Substring(second + 3).Trim('\n');
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
             var result = Markdown.ToHtml(md, pipeline);
 
-            var model = new ArticleModel {
+            var historyFile = (Path.ChangeExtension(filePath, ".history"));
+            var history = Enumerable.Empty<GitCommit>();
+            if (System.IO.File.Exists(historyFile))
+            {
+                using (var stream = System.IO.File.OpenRead(historyFile))
+                {
+                    history = GitHelper.ParseGit(stream).ToList();
+                }
+            }
+
+            var model = new ArticleModel
+            {
                 MarkdownHtml = result,
                 Metadata = meta.ToObject<ArticleMetadata>(),
-                History = System.IO.File.Exists(Path.ChangeExtension(filePath,".history")) ?
-                    System.IO.File.ReadAllText(Path.ChangeExtension(filePath, ".history")) :
-                    string.Empty
+                History = history.ToList()
             };
 
-            return View(viewName:$"{model.Metadata.Layout}", model:model);
+            return View(viewName: $"{model.Metadata.Layout}", model: model);
         }
 
         public IActionResult Error()
@@ -110,4 +210,6 @@ namespace EarthML.Web.Front.Areas.Blog
             return View();
         }
     }
+
+
 }

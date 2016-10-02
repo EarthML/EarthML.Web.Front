@@ -69,9 +69,13 @@
     </article>
 
     <section data-class="bg-color-complement-1">
-        <pre>
-        @Model.History
-</pre>
+        @foreach(var commit in Model.History)
+        {
+            <div>
+                <pre>@Newtonsoft.Json.JsonConvert.SerializeObject(commit,Newtonsoft.Json.Formatting.Indented)</pre>
+            </div>
+
+        }
     </section>
 </div>
 
