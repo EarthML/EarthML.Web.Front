@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -47,6 +48,8 @@ namespace EarthML.Web.Front.Areas.Blog
     {
         public string Markdown { get; set; }
         public ArticleMetadata Metadata { get; set; }
+
+        public string History { get; set; }
     }
     public class BlogController : Controller
     {
@@ -80,15 +83,23 @@ namespace EarthML.Web.Front.Areas.Blog
             //tags:
             //- EarthML
             //---
+            var filePath = "Areas/Blog/Articles/Introduction.md";
 
-
-            var md = System.IO.File.ReadAllText("Areas/Blog/Articles/Introduction.md");
+            var md = System.IO.File.ReadAllText(filePath);
             var first = md.IndexOf("---") +3;
             var second = md.IndexOf("---", first);
             var meta = md.Substring(first, second - first).Trim('\n').Split('\n').Select(kv=>kv.Split(':')).ToDictionary(k=>k.First().Trim(),v=>(object)string.Join(":", v.Skip(1)).Trim());
             md = md.Substring(second+3).Trim('\n');
 
-            var model = new ArticleModel { Markdown = md, Metadata = meta.ToObject<ArticleMetadata>() };
+
+            var model = new ArticleModel {
+                Markdown = md,
+                Metadata = meta.ToObject<ArticleMetadata>(),
+                History = System.IO.File.Exists(Path.ChangeExtension(filePath,".history")) ?
+                    System.IO.File.ReadAllText(Path.ChangeExtension(filePath, ".history")) :
+                    string.Empty
+            };
+
             return View(viewName:$"{model.Metadata.Layout}", model:model);
         }
 
