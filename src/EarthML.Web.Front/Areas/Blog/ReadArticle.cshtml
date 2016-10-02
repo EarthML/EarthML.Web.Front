@@ -1,0 +1,73 @@
+﻿@model EarthML.Web.Front.Areas.Blog.ArticleModel
+
+@{
+
+    ViewData["Title"] = Model.Metadata.Title;
+    var request = Url.ActionContext.HttpContext.Request;
+
+    var deeplink = string.Concat(
+                        request.Scheme,
+                        "://",
+                        request.Host.ToUriComponent(),
+                        request.PathBase.ToUriComponent(),
+                        request.Path.ToUriComponent(),
+                        request.QueryString.ToUriComponent());
+
+    var shareText = $"EarthML - {@Model.Metadata.Title}";
+}
+
+
+
+
+
+<div class="article-open container no-cover">
+    <div class="hover"></div>
+    <article class="article-open-item wrap single-column">
+        <header class="article-head">
+            <h1 class="graf graf--h3 graf--title">@Model.Metadata.Title</h1>
+          
+            @if (!String.IsNullOrEmpty(Model.Metadata.Subtitle))
+            {
+            <h2  lass="graf graf--h4 graf-after--h3 graf--subtitle">@Model.Metadata.Subtitle</h2>
+            }
+
+
+
+            <div class="article-social-icons">
+                <ul>
+                    <li class="social-icons-link">
+                        <a class="fa fa-twitter" href="https://twitter.com/share?url=@deeplink&amp;text=@shareText" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"></a>
+                    </li>
+                    <li class="social-icons-link">
+                        <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
+                    </li>
+                    <li class="social-icons-link">
+                        <a class="fa fa-google-plus" href="https://plus.google.com/share?url=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
+                    </li>
+                    <li class="social-icons-link linkedin">
+                        <a class="fa fa-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
+                    </li>
+                    <li class="social-icons-link reddit">
+                        <a class="fa fa-reddit-alien" href="https://reddit.com/submit?url=@deeplink&amp;title=@shareText" onclick="window.open(this.href, 'facebook-share','width=580,height=550');return false;"></a>
+                    </li>
+                    <li class="social-icons-link">
+                        <a class="fa fa-envelope" href="mailto:?subject=@shareText&amp;body=@deeplink"></a>
+                    </li>
+                </ul>
+            </div>
+            <span class="article-info">@Model.Metadata.Date</span>
+        </header>
+
+
+        <section class="" data-class="bg-color-complement-0">
+            <div id="">
+                <md-extended>@Model.Markdown</md-extended>
+            </div>
+        </section>
+
+
+    </article>
+</div>
+
+
+

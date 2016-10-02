@@ -37,8 +37,8 @@ Modernizr.addAsyncTest(function () {
     function testAutoplay(arg) {
         clearTimeout(timeout);
         elem.removeEventListener('playing', testAutoplay, false);
-        console.log(arg);
-        Modernizr.addTest('videoautoplay', arg && arg.type === 'playing' || elem.currentTime !== 0);
+ 
+        Modernizr.addTest('videoautoplay', arg && arg.type === 'playing');
          elem.parentNode.removeChild(elem);
     }
 

@@ -13,7 +13,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
  
 
-    grunt.registerTask("build", ["run:tool","lessDependencis","less"]);
+    grunt.registerTask("build", ["run:tool","lessDependencis","less","buildModernizer"]);
 
 
     grunt.registerTask("buildModernizer", function (l, b) {
@@ -29,6 +29,8 @@ module.exports = function (grunt) {
             ],
             "feature-detects": [
                 "video",
+                "css/transforms3d",
+                "touchevents",
                "../../../../wwwroot/libs/EarthML/Modernizr/VideoAutoplayTest.js"
             ],         
           
@@ -112,13 +114,15 @@ module.exports = function (grunt) {
             default: {
                 options: {
                     compress: true,
-                    paths: ["wwwroot"]
+                    paths: ["wwwroot","node_modules"]
                 },
                 plugins: [
                     new (require('less-plugin-autoprefix'))({ browsers: ["last 2 versions"] }),
                     new (require('less-plugin-clean-css'))({ advanced: true })
                 ],
-
+                modifyVars: {
+                    "fa-font-path": '"../../../font-awesome/fonts"',
+                },
                 files:
                     {
                         "wwwroot/libs/EarthML/content/style.min.css": "src/content/style.less"                     
@@ -152,6 +156,8 @@ module.exports = function (grunt) {
                     'nprogress/': 'nprogress/nprogress.*',
                     "requirejs/": [ "requirejs/require.js","requirejs-text/text.js", "require-css/css.js"], 
                     "headroom/": "headroom.js/dist/headroom.js",
+                    "classie/": ["classie/lib/classie.js", "classie/lib/class_list_ployfill.js"],
+                    "font-awesome/fonts":["font-awesome/fonts"],
                 }
             }
         }

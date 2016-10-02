@@ -11,12 +11,14 @@
     "nprogress": "0.2.0",
     "requirejs": "2.2.0",
     "require-css": "0.1.8",
-    "requirejs-text": "2.0.12"
+    "requirejs-text": "2.0.12",
+    "classie": "1.0.0",
+    "font-awesome": "4.6.3"
   },
   "devDependencies": {
     "grunt": "1.0.1",
     "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-less": "1.1.0",
+    "grunt-contrib-less": "1.4.0",
     "grunt-front-end-modules": "1.2.2",
     "grunt-modernizr": "^1.0.2",
     "grunt-npmcopy": "0.1.0",

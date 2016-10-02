@@ -96,6 +96,7 @@ footer, header, hgroup, menu, nav, section {
 
 body {
     line-height: 1;
+     transition: background 1s ease;
 }
 
 ol, ul {
@@ -122,7 +123,7 @@ table {
 }
 
 html {
-    font-size: 93.75%;
+ //   font-size: 93.75%;
 }
 
 *, *:after, *:before {
@@ -152,7 +153,7 @@ input,
 textarea {
     color: #404040;
     color: rgba(0,0,0,0.75);
-    font: 15px/20px 'Open Sans', sans-serif;
+    font: 20px/25px 'Open Sans', sans-serif;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -502,11 +503,11 @@ main > header {
     position: relative;
 }
 
-header {
+main > header {
     @media (min-aspect-ratio: 16/9) {
         height: 100%;
         overflow: hidden;
-        background: red;
+   
     }
 
     @media (max-aspect-ratio: 16/9) {
@@ -616,8 +617,12 @@ main > header a#scroll-box:hover {
 
 
 main {
+    section{
+        border-bottom:solid 1px black;
+    }
     section > div{
-    padding: 30rem;
+        //padding: 30rem;
+        min-height:600px;
     }
 }
 
@@ -648,7 +653,7 @@ nav.headroom--not-top {
 }
 /*http://static1.squarespace.com/static/51d32fcae4b0ae74dc6d4cea/51d3d544e4b03b50e231697b/51d3d5e4e4b0ab4d475f2ad3/1470217886611/LH_Q.jpg?format=1000w*/
 /*http://cameralabs.org/media/cameralabs/images/Tanya/July/22.07/07-landscape_photographers_06.jpg*/
-nav {
+header nav {
     /*position: fixed;*/
     width: 100%;
     top: 0;
@@ -657,7 +662,11 @@ nav {
     //   font-size: 4rem;
     //   text-transform: uppercase;
     z-index: 100;
-
+    
+    &.headroom--unpinned, &.headroom1--top
+    {
+        overflow-y:scroll;
+    }
     ul {
         width: 100%;
         text-align: right;
@@ -730,3 +739,89 @@ nav.headroom--top-top .eml-logo .logo {
 .theme-orange #nprogress .bar {
     background: #F26522;
 }
+
+
+
+
+
+@media only screen and (max-width: 640px){
+.show-mobile {
+    display: block!important;
+}
+}
+ 
+.show-tablet, .show-mobile {
+    display: none;
+}
+
+
+@media only screen and (max-width: 640px){
+.hide-mobile {
+    display: none!important;
+}
+}
+
+.hide-tablet, .hide-mobile {
+    display: block;
+}
+
+
+
+.icon.big {
+    line-height: 40px;
+}
+
+@media only screen and (max-width: 640px){
+    a:link {
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    .dropdown-button {
+    right: -10px;
+}
+}
+
+ 
+
+.z1 {
+    z-index: 1;
+}
+
+.trigger.menu{
+    height: 40px;
+    padding-left: 40px;
+}
+.trigger.menu::before {
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 40px;
+    height: 6px;
+    background: @color-primary-0;
+    box-shadow: 0 6px #fff, 0 12px @color-primary-0, 0 18px #fff, 0 24px @color-primary-0;
+    content: '';
+ 
+}
+
+
+.primary-fill{
+    fill:@color-primary-0;
+}
+.background-primary{
+    background-color:@color-primary-0;
+
+}
+
+.mp-level{
+    background-color:@color-primary-0;
+
+}
+
+
+
+
+@import "font-awesome/less/font-awesome.less";
+
+@fa-font-path:        "../../font-awesome/fonts";
+
+@import "../../Areas/Blog/Content/article.less";
+@import "../MLPushMenu/content/component.less";
