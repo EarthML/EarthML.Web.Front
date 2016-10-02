@@ -78,12 +78,9 @@ namespace EarthML.Web.Front.Areas.Blog
                     {
                         // commit message divider
                         processingMessage = !processingMessage;
-                    }
-
-                    if (line.Length > 0 && line[0] == '\t')
-                    {
+                    }else if (processingMessage) { 
                         // commit message.
-                        commit.Message += line;
+                        commit.Message += line.Trim(' ');
                     }
 
                     if (line.Length > 1 && Char.IsLetter(line[0]) && line[1] == '\t')
