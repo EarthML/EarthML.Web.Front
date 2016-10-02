@@ -3,7 +3,7 @@
 const player = document.querySelector("#bg-player") as HTMLIFrameElement;
 const video = document.querySelector("#bg-player") as HTMLVideoElement;
 const videoBG = document.querySelector("#video-background-img") as HTMLDivElement;
-const scroller = document.querySelector(".scroller");
+export const scroller = document.querySelector(".scroller");
 import * as NProgress from "nprogress"; 
 import Headroom = require("headroom");
 import Modernizr = require("modernizr"); 
@@ -18,7 +18,7 @@ import { MLPushMenu } from "./MLPushMenu/index";
 const navHeight = 65;
 
 
-function scrollToTop(scrollDuration) {
+export function scrollToTop(scrollDuration) {
     var cosParameter = window.scrollY / 2,
         scrollCount = 0,
         oldTimestamp = performance.now();
@@ -33,7 +33,7 @@ function scrollToTop(scrollDuration) {
     window.requestAnimationFrame(step);
 }
 
-function scrollTo(offsetTop: number, scrollDuration, element: Element = document.body) {
+export function scrollTo(offsetTop: number, scrollDuration, element: Element = document.body) {
               
     var cosParameter = (offsetTop - element.scrollTop) / 2,
         scrollCount = 0,
@@ -52,6 +52,23 @@ function scrollTo(offsetTop: number, scrollDuration, element: Element = document
     }
 
     window.requestAnimationFrame(step);           
+}
+
+export function scrollToElement(node: HTMLElement, scrollDuration, element: Element = document.body) {
+    let offset = -70;
+   
+
+    let offsetEl = node;
+    while (offsetEl && offsetEl !== scroller) {
+        console.log(["sc", offsetEl, offset, offsetEl.offsetTop]);
+        offset += offsetEl.offsetTop;
+        offsetEl = offsetEl.offsetParent as HTMLElement;
+    }
+
+   
+
+    scrollTo(offset, scrollDuration, element);
+
 }
 
 document.querySelector("#scrollMainContent").addEventListener("click", (e) => {
@@ -309,12 +326,17 @@ let last = "";
 let sections = document.querySelectorAll("main section");
 document.body.classList.add(last = sections.item(0).getAttribute("data-class"));
 let offset = (window.innerHeight - navHeight) / 2 + navHeight;
-function isScrolledIntoView(el) {
+export function isScrolledIntoView(el) {
     var elementTop = el.getBoundingClientRect().top;
     var elementBottom = el.getBoundingClientRect().bottom;
     console.log([elementTop, window.innerHeight, elementBottom, offset, elementTop < window.innerHeight, elementBottom >= offset, elementTop < window.innerHeight && elementBottom >= offset]);
     var isVisible = elementTop < window.innerHeight && elementBottom >= offset
     return isVisible;
+}
+export function distanceFromView(el) {
+    var elementTop = el.getBoundingClientRect().top;
+    var elementBottom = el.getBoundingClientRect().bottom;
+    return elementTop ;
 }
 
 let scrollStopTimer = null;
@@ -356,11 +378,97 @@ video.addEventListener("ended", listener, false);
 var menu = new MLPushMenu(document.getElementById('mp-menu'), document.getElementById('trigger'));
 
 
-let a = JSON.parse(window.sessionStorage.getItem("__scroll")||"{}");
-if (a.value && a.href === window.location.href ) {
-    scroller.scrollTop = a.value;
-}
+
 
 window.onbeforeunload = function (e) {
     window.sessionStorage.setItem("__scroll", JSON.stringify({ value: scroller.scrollTop.toString(), href: window.location.href  }));
 };
+
+
+(function (document, history, location) {
+    var HISTORY_SUPPORT = !!(history && history.pushState);
+
+    var anchorScrolls = {
+        ANCHOR_REGEX: /^#[^ ]+$/,
+        OFFSET_HEIGHT_PX: 50,
+
+        /**
+         * Establish events, and fix initial scroll position if a hash is provided.
+         */
+        init: function () {
+            
+            this.scrollToCurrent();
+            window.addEventListener('hashchange', this.scrollToCurrent.bind(this));
+            document.body.addEventListener('click', this.delegateAnchors.bind(this));
+        },
+
+        /**
+         * Return the offset amount to deduct from the normal scroll position.
+         * Modify as appropriate to allow for dynamic calculations
+         */
+        getFixedOffset: function () {
+            return this.OFFSET_HEIGHT_PX;
+        },
+
+        /**
+         * If the provided href is an anchor which resolves to an element on the
+         * page, scroll to it.
+         * @param  {String} href
+         * @return {Boolean} - Was the href an anchor.
+         */
+        scrollIfAnchor: function (href, pushToHistory) {
+            var match, rect, anchorOffset;
+            
+            if (!this.ANCHOR_REGEX.test(href)) {
+                return false;
+            }
+           
+            match = document.getElementById(href.slice(1));
+
+            if (match) {
+                console.log(match);
+                scrollToElement(match, 1, scroller);
+
+                // Add the state to history as-per normal anchor links
+                if (HISTORY_SUPPORT && pushToHistory) {
+                    history.pushState({}, document.title, location.pathname + href);
+                }
+            }
+
+            return !!match;
+        },
+
+        /**
+         * Attempt to scroll to the current location's hash.
+         */
+        scrollToCurrent: function () {
+            if (!this.scrollIfAnchor(window.location.hash)) {
+                let a = JSON.parse(window.sessionStorage.getItem("__scroll")||"{}");
+                if (a.value && a.href === window.location.href) {
+                    scroller.scrollTop = a.value;
+                    window.sessionStorage.setItem("__scroll", "{}");
+                }
+
+            }
+        },
+
+        /**
+         * If the click event's target was an anchor, fix the scroll position.
+         */
+        delegateAnchors: function (e) {
+            console.log(e);
+            var elem = e.target;
+
+            if (
+                elem.nodeName === 'A' &&
+                this.scrollIfAnchor(elem.getAttribute('href'), true)
+            ) {
+                e.preventDefault();
+            }
+        }
+    };
+    anchorScrolls.init();
+    //window.addEventListener(
+    //    'DOMContentLoaded', anchorScrolls.init.bind(anchorScrolls)
+    //);
+})(window.document, window.history, window.location);

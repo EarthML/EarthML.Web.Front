@@ -1,12 +1,12 @@
 ﻿
-import "../index";
+import { scroller, scrollTo, isScrolledIntoView, distanceFromView, scrollToElement, scrollToTop } from "../index";
 
 
 
 import Headroom = require("headroom");
 
 
-const scroller = document.querySelector(".scroller");
+ 
 const header = document.querySelector(".article-open-item") as HTMLElement;
 const toc = document.querySelector("#article-toc") as HTMLElement;
 
@@ -104,7 +104,7 @@ window.addEventListener("resize", function () {
 
 function init() {
     [].slice.call(document.querySelectorAll('.toc.nav')).forEach(function (nav) {
-        var navItems = [].slice.call(nav.querySelectorAll('.nav__item')),
+        var navItems: HTMLElement[] = [].slice.call(nav.querySelectorAll('.nav__item')),
             itemsTotal = navItems.length,
             setCurrent = function (item) {
                 // return if already current
@@ -120,9 +120,46 @@ function init() {
             };
 
         navItems.forEach(function (item) {
-            item.addEventListener('click', function () { setCurrent(item); });
+            item.addEventListener('click', function (e) { e.preventDefault(); setCurrent(item); window.location.hash = null; window.location.hash = item.getAttribute('href') });
         });
+
+
+        let headers = navItems.map(e => ({ target: document.querySelector(e.getAttribute("href")), source: e })).reverse();
+
+        let scrollStopTimer = null;
+        function onScrollWrapper() {
+
+            if (!scrollStopTimer) {
+                scrollStopTimer = setTimeout(onScroll, 50);
+            }
+        }
+        function onScroll() {
+            scrollStopTimer = 0;
+
+            for (let el of headers) {
+
+             //   if (isScrolledIntoView(el.target)) {
+             //       setCurrent(el.source);
+              //      return;
+             //   }
+            }
+            for (let el of headers) {
+                if (distanceFromView(el.target) < (tocoffset - offset)) {
+                    setCurrent(el.source);
+                    return;
+                }
+            }
+            setCurrent(headers[headers.length-1].source);
+        }
+
+        scroller.addEventListener('scroll', onScrollWrapper);
+
+
+
     });
+
+
+   
 
     //[].slice.call(document.querySelectorAll('.link-copy')).forEach(function (link) {
     //    link.setAttribute('data-clipboard-text', location.protocol + '//' + location.host + location.pathname + '#' + link.parentNode.id);

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using EarthML.Web.Front.Areas.Blog;
 using Markdig;
 using Markdig.Renderers;
+using Markdig.Renderers.Html;
 using Markdig.Syntax;
 using Markdig.Syntax.Inlines;
 using Microsoft.AspNetCore.Mvc;
@@ -140,13 +141,18 @@ namespace EarthML.Web.Front.Areas.Blog
 
        
     }
+    public class TableOfContentEntry
+    {
+        public string Title { get; set; }
+        public string Id { get; set; }
+    }
     public class ArticleModel
     {
         public string MarkdownHtml { get; set; }
         public ArticleMetadata Metadata { get; set; }
 
         public List<GitCommit> History { get; set; }
-        public string[] TableOfContent { get; set; }
+        public TableOfContentEntry[] TableOfContent { get; set; }
 
     }
     public class BlogController : Controller
@@ -209,10 +215,10 @@ namespace EarthML.Web.Front.Areas.Blog
                 pipeline.Setup(renderer);
                 renderer.Render(markdownDocument);
 
-
+                 
                 var mdParsed = markdownDocument.OfType<Markdig.Syntax.HeadingBlock>()
-                    .Select(h=>h.Inline.FirstChild as LiteralInline)
-                    .Select(k=>k.Content.Text.Substring(k.Content.Start,k.Content.Length))
+                    .Select(h=> new { literal = h.Inline.FirstChild as LiteralInline , attributes = h.GetAttributes()})
+                    .Select(k=> new TableOfContentEntry { Title = k.literal.Content.Text.Substring(k.literal.Content.Start, k.literal.Content.Length),Id = k.attributes.Id })
                     .ToArray();
 
 

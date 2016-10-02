@@ -70,9 +70,9 @@
         {
         <div class="clamp toc-release">
             <nav id="article-toc" class="toc nav nav--desta">
-                 @for (var i = 0;i< Model.TableOfContent.Length;i++)
+                 @foreach(var entry in Model.TableOfContent)
                  {
-                    <button class="nav__item @(i==0?"nav__item--current":"")" aria-label="Item @i"><svg class="nav__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-triangle"></use></svg><span class="nav__item-title">@Model.TableOfContent[i]</span></button>
+                    <a href="#@entry.Id" class="nav__item @(entry == Model.TableOfContent.First()?"nav__item--current":"")" aria-label="@entry.Title"><svg class="nav__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-triangle"></use></svg><span class="nav__item-title">@entry.Title</span></a>
                  }
                   
             </nav>
