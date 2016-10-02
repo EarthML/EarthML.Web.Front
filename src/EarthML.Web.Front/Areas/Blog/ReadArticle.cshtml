@@ -17,8 +17,16 @@
 }
 
 
+@section RequireJsDeps {"libs/EarthML/Blog/index"}
 
-
+<svg class="hidden">
+    <defs>
+        <symbol id="icon-triangle" viewBox="0 0 24 24">
+            <title>triangle</title>
+            <path d="M4.5,19.8C4.5,19.8,4.5,19.8,4.5,19.8V4.2c0-0.3,0.2-0.5,0.4-0.7c0.2-0.1,0.5-0.1,0.8,0l13.5,7.8c0.2,0.1,0.4,0.4,0.4,0.7c0,0.3-0.2,0.5-0.4,0.7L5.7,20.4c-0.1,0.1-0.3,0.1-0.5,0.1C4.8,20.6,4.5,20.2,4.5,19.8z M6,5.6v12.8L17.2,12L6,5.6z"></path>
+        </symbol>
+    </defs>
+</svg>
 
 <div class="article-open container no-cover">
     <div class="hover"></div>
@@ -58,11 +66,21 @@
             <span class="article-info">@Model.Metadata.Date</span>
         </header>
 
+        @if (Model.TableOfContent?.Any() ?? false)
+        {
+        <div class="clamp toc-release">
+            <nav id="article-toc" class="toc nav nav--desta">
+                 @for (var i = 0;i< Model.TableOfContent.Length;i++)
+                 {
+                    <button class="nav__item @(i==0?"nav__item--current":"")" aria-label="Item @i"><svg class="nav__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-triangle"></use></svg><span class="nav__item-title">@Model.TableOfContent[i]</span></button>
+                 }
+                  
+            </nav>
+        </div>
+        }
 
-        <section class="article-content" data-class="bg-color-complement-0">
-           
-               @Html.Raw(Model.MarkdownHtml)
-   
+        <section class="article-content" data-class="bg-color-complement-0">           
+               @Html.Raw(Model.MarkdownHtml)   
         </section>
 
 

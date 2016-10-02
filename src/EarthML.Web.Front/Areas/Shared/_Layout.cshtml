@@ -225,7 +225,7 @@
         require(["nprogress"], function (NProgress) {
             NProgress.configure({ minimum: 0.4 });
             NProgress.start();
-            require(["libs/EarthML/index"],
+            require([ @(RenderSection("RequireJsDeps", false)?.Value ?? @"""libs/EarthML/index""")],
                function (module) {
 
                });

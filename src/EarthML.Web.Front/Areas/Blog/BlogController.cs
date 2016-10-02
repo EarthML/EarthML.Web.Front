@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using EarthML.Web.Front.Areas.Blog;
 using Markdig;
+using Markdig.Renderers;
+using Markdig.Syntax;
+using Markdig.Syntax.Inlines;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EarthML.Web.Front.Areas.Blog
@@ -78,7 +81,9 @@ namespace EarthML.Web.Front.Areas.Blog
                     {
                         // commit message divider
                         processingMessage = !processingMessage;
-                    }else if (processingMessage) { 
+                    }
+                    else if (processingMessage)
+                    {
                         // commit message.
                         commit.Message += line.Trim(' ');
                     }
@@ -132,6 +137,8 @@ namespace EarthML.Web.Front.Areas.Blog
         public string Description { get; set; }
         public string Layout { get; set; }
         public string Date { get; set; }
+
+       
     }
     public class ArticleModel
     {
@@ -139,6 +146,8 @@ namespace EarthML.Web.Front.Areas.Blog
         public ArticleMetadata Metadata { get; set; }
 
         public List<GitCommit> History { get; set; }
+        public string[] TableOfContent { get; set; }
+
     }
     public class BlogController : Controller
     {
@@ -180,26 +189,53 @@ namespace EarthML.Web.Front.Areas.Blog
             var meta = md.Substring(first, second - first).Trim('\n').Split('\n').Select(kv => kv.Split(':')).ToDictionary(k => k.First().Trim(), v => (object)string.Join(":", v.Skip(1)).Trim());
             md = md.Substring(second + 3).Trim('\n');
             var pipeline = new MarkdownPipelineBuilder().UseAdvancedExtensions().Build();
-            var result = Markdown.ToHtml(md, pipeline);
+            // var result = Markdown.ToHtml(md, pipeline);
+            var markdownDocument = Markdown.Parse(md, pipeline);
 
-            var historyFile = (Path.ChangeExtension(filePath, ".history"));
-            var history = Enumerable.Empty<GitCommit>();
-            if (System.IO.File.Exists(historyFile))
+            using (var txtWriter = new StringWriter())
             {
-                using (var stream = System.IO.File.OpenRead(historyFile))
+                var renderer = new HtmlRenderer(txtWriter);
+
+                if (markdownDocument.First() is Markdig.Syntax.HeadingBlock)
                 {
-                    history = GitHelper.ParseGit(stream).ToList();
+                    var header = markdownDocument.First() as HeadingBlock;
+                    if (header.Level == 1)
+                    {
+                        markdownDocument.Remove(header);
+                    }
+
                 }
+
+                pipeline.Setup(renderer);
+                renderer.Render(markdownDocument);
+
+
+                var mdParsed = markdownDocument.OfType<Markdig.Syntax.HeadingBlock>()
+                    .Select(h=>h.Inline.FirstChild as LiteralInline)
+                    .Select(k=>k.Content.Text.Substring(k.Content.Start,k.Content.Length))
+                    .ToArray();
+
+
+                var historyFile = (Path.ChangeExtension(filePath, ".history"));
+                var history = Enumerable.Empty<GitCommit>();
+                if (System.IO.File.Exists(historyFile))
+                {
+                    using (var stream = System.IO.File.OpenRead(historyFile))
+                    {
+                        history = GitHelper.ParseGit(stream).ToList();
+                    }
+                }
+
+                var model = new ArticleModel
+                {
+                    MarkdownHtml = txtWriter.ToString(),
+                    Metadata = meta.ToObject<ArticleMetadata>(),
+                    History = history.ToList(), 
+                     TableOfContent = mdParsed
+                };
+
+                return View(viewName: $"{model.Metadata.Layout}", model: model);
             }
-
-            var model = new ArticleModel
-            {
-                MarkdownHtml = result,
-                Metadata = meta.ToObject<ArticleMetadata>(),
-                History = history.ToList()
-            };
-
-            return View(viewName: $"{model.Metadata.Layout}", model: model);
         }
 
         public IActionResult Error()
