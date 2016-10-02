@@ -1,4 +1,4 @@
-﻿---
+---
 layout: ReadArticle
 title: Introducing EarthML
 subtitle: The EarthML vision
