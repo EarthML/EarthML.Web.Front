@@ -103,7 +103,7 @@ window.addEventListener("resize", function () {
 
 
 function init() {
-    [].slice.call(document.querySelectorAll('.toc.nav')).forEach(function (nav) {
+    [].slice.call(document.querySelectorAll('.toc .nav')).forEach(function (nav) {
         var navItems: HTMLElement[] = [].slice.call(nav.querySelectorAll('.nav__item')),
             itemsTotal = navItems.length,
             setCurrent = function (item) {
@@ -119,8 +119,9 @@ function init() {
                 item.classList.add('nav__item--current');
             };
 
+        let ignoreScroll = false;
         navItems.forEach(function (item) {
-            item.addEventListener('click', function (e) { e.preventDefault(); setCurrent(item); window.location.hash = null; window.location.hash = item.getAttribute('href') });
+            item.addEventListener('click', function (e) { e.preventDefault(); setCurrent(item); ignoreScroll = true; setTimeout(() => ignoreScroll = false,1000);  window.location.hash = item.getAttribute('href') });
         });
 
 
@@ -135,6 +136,7 @@ function init() {
         }
         function onScroll() {
             scrollStopTimer = 0;
+            if (ignoreScroll) return;
 
             for (let el of headers) {
 
