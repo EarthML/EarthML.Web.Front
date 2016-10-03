@@ -91,6 +91,7 @@ namespace EarthML.Web.Front
         {
             services.AddMarkdownBlogEngine().AddArticles("Areas/Blog/Articles");
 
+
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
               .AddRazorOptions(options =>
               {
