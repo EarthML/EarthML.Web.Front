@@ -392,21 +392,26 @@ a, a > code {
     text-decoration: none;
 }
 
-.loop(@val, @counter) when (@counter >= 0) {
-    .loop(@val,(@counter - 1)); // next iteration
+.loop(@val, @counter,@foreground) when (@counter >= 0) {
+    .loop(@val,(@counter - 1),@foreground); // next iteration
     .bg-@{val}-@{counter} {
         @color: "@{val}-@{counter}";
         background-color: @@color;
+        color:@foreground;
     }
 }
 
-.loop(color-primary,4);
-.loop(color-complement,4);
-.loop(color-secondary-1,4);
-.loop(color-secondary-2,4);
+.loop(color-primary,4,#403d34);
+.loop(color-complement,4,#fcfbf7);
+.loop(color-secondary-1,4,#403d34);
+.loop(color-secondary-2,4,#403d34);
 
 .bg-white {
     background-color: white;
+}
+.bg-white-primary{
+    background-color:#fcfbf7;
+    color:#403d34;
 }
 
 
@@ -665,6 +670,7 @@ header nav {
     //   font-size: 4rem;
     //   text-transform: uppercase;
     z-index: 100;
+    border-bottom: solid rgba(0,0,0,0.2) 1px;
 
     &.headroom--unpinned, &.headroom1--top {
         overflow-y: scroll;

@@ -33,15 +33,15 @@
     <article class="article-open-item wrap single-column">
         <header class="article-head">
             <h1 class="graf graf--h3 graf--title">@Model.Metadata.Title</h1>
-          
+
             @if (!String.IsNullOrEmpty(Model.Metadata.Subtitle))
             {
-            <h2  lass="graf graf--h4 graf-after--h3 graf--subtitle">@Model.Metadata.Subtitle</h2>
+                <h2 lass="graf graf--h4 graf-after--h3 graf--subtitle">@Model.Metadata.Subtitle</h2>
             }
 
 
 
-           
+
             <span class="article-info">@Model.Metadata.Date</span>
         </header>
 
@@ -72,14 +72,12 @@
                 </div>
 
                 @if (Model.TableOfContent?.Any() ?? false)
-            {
-
-
-                    <nav  class="nav nav--desta">
+                {
+                    <nav class="nav nav--desta">
 
 
                         @foreach (var entry in Model.TableOfContent)
-                {
+                        {
                             <a href="#@entry.Id" class="nav__item @(entry == Model.TableOfContent.First()?"nav__item--current":"")" aria-label="@entry.Title"><svg class="nav__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-triangle"></use></svg><span class="nav__item-title">@entry.Title</span></a>
                         }
 
@@ -89,15 +87,40 @@
             </div>
         </div>
 
-        <section class="article-content" data-class="bg-color-complement-0">           
-               @Html.Raw(Model.MarkdownHtml)   
+        <section class="article-content" data-class="bg-white-primary  bg-light">
+            @Html.Raw(Model.MarkdownHtml)
         </section>
+
 
 
     </article>
 
-    <section data-class="bg-color-complement-1">
-        @foreach(var commit in Model.History)
+    <section class="single-column" data-class="bg-white-primary  bg-light">
+        <div id="disqus_thread"></div>
+        <script>
+
+        /**
+         *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+         *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+
+        var disqus_config = function () {
+            this.page.url = "@deeplink";  // Replace PAGE_URL with your page's canonical URL variable
+            this.page.identifier = "@Model.Metadata.Alias.Trim('/',' ')"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+        };
+
+        (function() { // DON'T EDIT BELOW THIS LINE
+            var d = document, s = d.createElement('script');
+            s.src = '//earthml.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+    </section>
+
+    <section data-class="bg-white-primary bg-light">
+        @foreach (var commit in Model.History)
         {
             <div>
                 <pre>@Newtonsoft.Json.JsonConvert.SerializeObject(commit,Newtonsoft.Json.Formatting.Indented)</pre>
