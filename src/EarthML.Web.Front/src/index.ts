@@ -322,9 +322,10 @@ Modernizr.on('videoautoplay', function (result) {
     }
 });
 
-let last = "";
+let last = [];
 let sections = document.querySelectorAll("main section");
-document.body.classList.add(last = sections.item(0).getAttribute("data-class"));
+document.body.classList.add.apply(document.body.classList, last = sections.item(0).getAttribute("data-class").split(' ').filter(f => f));
+
 let offset = (window.innerHeight - navHeight) / 2 + navHeight;
 export function isScrolledIntoView(el) {
     var elementTop = el.getBoundingClientRect().top;
@@ -353,13 +354,14 @@ function onScroll() {
         if (isScrolledIntoView(el)) {
             console.log(el);
 
-            if (last !== el.getAttribute("data-class")) {
-                if (last) {
-                    document.body.classList.remove(last);
-                }
-                document.body.classList.add(last = el.getAttribute("data-class"));
-               
+           // if (last !== el.getAttribute("data-class")) {
+            if (last.length) {
+                document.body.classList.remove.apply(document.body.classList, last);
             }
+
+            document.body.classList.add.apply(document.body.classList, (last = el.getAttribute("data-class").split(' ').filter(f=>f)));
+               
+           // }
             break;
         }
     }
