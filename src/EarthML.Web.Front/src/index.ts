@@ -354,15 +354,15 @@ function onScroll() {
         if (isScrolledIntoView(el)) {
             console.log(el);
 
-           // if (last !== el.getAttribute("data-class")) {
+            if (last.join('') !== el.getAttribute("data-class").split(' ').filter(f => f).join('')) {
             if (last.length) {
                 document.body.classList.remove.apply(document.body.classList, last);
             }
 
             document.body.classList.add.apply(document.body.classList, (last = el.getAttribute("data-class").split(' ').filter(f=>f)));
                
-           // }
-            break;
+            }
+            return;
         }
     }
 }
