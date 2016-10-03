@@ -89,7 +89,8 @@ namespace EarthML.Web.Front
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
+            services.AddMarkdownBlogEngine().AddArticles("Areas/Blog/Articles");
 
             services.AddMvc(o => o.Conventions.Add(new FeatureConvention()))
               .AddRazorOptions(options =>

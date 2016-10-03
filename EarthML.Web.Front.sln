@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "EarthML.Web.Front", "src\EarthML.Web.Front\EarthML.Web.Front.xproj", "{B946CC14-8F27-4E5E-A4D3-82E62A78F8F9}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "S-Innovations.MarkDown.BlogEngine", "src\S-Innovations.MarkDown.BlogEngine\S-Innovations.MarkDown.BlogEngine.xproj", "{A9AC43FC-BF80-4E7E-9214-F2B29DFF1B62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,11 +25,16 @@ Global
 		{B946CC14-8F27-4E5E-A4D3-82E62A78F8F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B946CC14-8F27-4E5E-A4D3-82E62A78F8F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B946CC14-8F27-4E5E-A4D3-82E62A78F8F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9AC43FC-BF80-4E7E-9214-F2B29DFF1B62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9AC43FC-BF80-4E7E-9214-F2B29DFF1B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9AC43FC-BF80-4E7E-9214-F2B29DFF1B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9AC43FC-BF80-4E7E-9214-F2B29DFF1B62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B946CC14-8F27-4E5E-A4D3-82E62A78F8F9} = {F1AE1230-6C67-4521-8993-8D308A03C70B}
+		{A9AC43FC-BF80-4E7E-9214-F2B29DFF1B62} = {F1AE1230-6C67-4521-8993-8D308A03C70B}
 	EndGlobalSection
 EndGlobal
