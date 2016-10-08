@@ -12,7 +12,6 @@ author:
   avatar: https://s.gravatar.com/avatar/9003d0ada00ae43a199d7a5fa1be7714?s=80
 design:
   bg_color: "#0D3483"
-  image: https://cdn.auth0.com/blog/authenticate-linkedin-aspnetcore/logo.png
 tags:
 - EarthML
 ---
@@ -24,11 +23,19 @@ In the process of doing so we will be blogging, sharing and helping others to do
 By doing so we will share our current challenges for others to learn from and to get feedback from the community to help solve these challenges.
 
 
-## Tableofcontent 1
-Adding a second parahgraph.
+## Geospatial Information
+At EarthML we believe that there is room for improving tools, libraries and learning matrial for working with geospatial data within the .Net ecosystem. At EarthML we are very profound of using .Net and the Microsoft cloud platform Azure. One of the first products we will be working on is a Geospatial Database as a service as well as tools for using geospatial data in your dotnet solutions. 
+
+## DotNet Core
+All products and solutions will be made compatible with CoreCLR and also the website of www.EarthML.com is made on AspNet Core and is avaible for others to draw inspiration from at [GitHub][1]
+
+## Visual Studio Team Services
+We use continues integration and delivery for all our products, powered by the Visual Studio Team Services, and therefore you can also expect us to blog about this.
 
 
-Adding a forth parahgraph. 
+## Next
+Pay attention to this [blog][2] for updates and product releases as we evolve the [EarthML website][3].
 
-## Tableofcontent 2
-Adding a third parahgraph. 
+[1]: https://github.com/EarthML/EarthML.Web.Front "EarthML Website on Github"
+[2]: http://earthml.com/blog "EarthML Blog"
+[3]: http://earthml.com "EarthML Website"
