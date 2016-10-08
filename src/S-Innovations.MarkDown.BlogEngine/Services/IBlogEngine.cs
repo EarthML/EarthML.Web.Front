@@ -9,6 +9,7 @@ namespace SInnovations.MarkDown.BlogEngine.Services
 {
     public interface IBlogEngine
     {
-          Task<ArticleModel> GetArticleAsync(string key);
+        Task<ArticleModel> GetArticleAsync(string key);
+        Task<List<ArticleModel>> GetArticlesAsync();
     }
 }

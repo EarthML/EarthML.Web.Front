@@ -398,13 +398,16 @@ a, a > code {
         @color: "@{val}-@{counter}";
         background-color: @@color;
         color:@foreground;
+        a{
+            color:@foreground;
+        }
     }
 }
 
 .loop(color-primary,4,#403d34);
 .loop(color-complement,4,#fcfbf7);
 .loop(color-secondary-1,4,#403d34);
-.loop(color-secondary-2,4,#403d34);
+.loop(color-secondary-2,4,white);
 
 .bg-white {
     background-color: white;
@@ -815,6 +818,7 @@ nav.headroom--top-top .eml-logo .logo {
     box-shadow: 0 6px #fff, 0 12px @color-primary-0, 0 18px #fff, 0 24px @color-primary-0;
     content: '';
 }
+
 
 
 .primary-fill {

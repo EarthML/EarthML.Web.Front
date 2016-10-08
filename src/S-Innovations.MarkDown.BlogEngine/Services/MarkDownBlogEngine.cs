@@ -218,5 +218,10 @@ namespace SInnovations.MarkDown.BlogEngine.Services
             return Task.FromResult(articles[key]);
 
         }
+
+        public Task<List<ArticleModel>> GetArticlesAsync()
+        {
+            return Task.FromResult(articles.Values.ToList());
+        }
     }
 }

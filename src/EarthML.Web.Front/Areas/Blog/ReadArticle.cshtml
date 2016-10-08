@@ -97,15 +97,17 @@
     </article>
 
     <section class="single-column" data-class="bg-white-primary  bg-light">
+        <h1>Comments</h1>
         <div id="disqus_thread"></div>
         
        
     </section>
 
-    <section data-class="bg-white-primary bg-light">
+    <section class="single-column" data-class="bg-white-primary bg-light">
+        <h1>History</h1>
         @foreach (var commit in Model.History)
         {
-            <div>
+            <div class="">
                 <pre>@Newtonsoft.Json.JsonConvert.SerializeObject(commit,Newtonsoft.Json.Formatting.Indented)</pre>
             </div>
 
