@@ -1,11 +1,16 @@
-﻿@{
+﻿@model List<SInnovations.MarkDown.BlogEngine.Models.ArticleModel>
+@{
     ViewData["Title"] = "Blog Page";
 }
 
-<section data-class="bg-color-secondary-2-0">
+<section data-class="bg-color-secondary-2-0 bg-light">
+    
     <div id="">
+        @foreach (var post in Model)
+        {
         <p>
-            <a href="~/blog/2016/10/02/introducing-earthml/">Read</a>
+            <a href="@Url.Content("~/blog"+post.Metadata.Alias)">@post.Metadata.Title</a>
         </p>
+        }
     </div>
 </section> 

@@ -8,6 +8,7 @@ import Headroom = require("headroom");
 
  
 const header = document.querySelector(".article-open-item") as HTMLElement;
+const content = document.querySelector(".article-content") as HTMLElement;
 const toc = document.querySelector("#article-toc") as HTMLElement;
 
 window["toc"] = toc;
@@ -31,7 +32,9 @@ function calcOffsets() {
         tocoffset += offsetEl.offsetTop;
         offsetEl = offsetEl.offsetParent as HTMLElement;
     }
+    console.log([offset, tocoffset]);
 
+    offset = tocoffset - 70;
 }
 calcOffsets();
  
@@ -79,6 +82,7 @@ let tocHeadroom = new Headroom(header,
         onNotTop: function () {
          //   toc.style.position = "fixed";
             toc.style.top = (tocoffset - offset) + "px";
+
         },
         // callback when at bottom of page, `this` is headroom object
         // onBottom: function () { },
@@ -103,7 +107,7 @@ window.addEventListener("resize", function () {
 
 
 function init() {
-    [].slice.call(document.querySelectorAll('.toc.nav')).forEach(function (nav) {
+    [].slice.call(document.querySelectorAll('.toc .nav')).forEach(function (nav) {
         var navItems: HTMLElement[] = [].slice.call(nav.querySelectorAll('.nav__item')),
             itemsTotal = navItems.length,
             setCurrent = function (item) {
@@ -119,8 +123,9 @@ function init() {
                 item.classList.add('nav__item--current');
             };
 
+        let ignoreScroll = false;
         navItems.forEach(function (item) {
-            item.addEventListener('click', function (e) { e.preventDefault(); setCurrent(item); window.location.hash = null; window.location.hash = item.getAttribute('href') });
+            item.addEventListener('click', function (e) { e.preventDefault(); setCurrent(item); ignoreScroll = true; setTimeout(() => ignoreScroll = false,1000);  window.location.hash = item.getAttribute('href') });
         });
 
 
@@ -135,6 +140,7 @@ function init() {
         }
         function onScroll() {
             scrollStopTimer = 0;
+            if (ignoreScroll) return;
 
             for (let el of headers) {
 
@@ -143,12 +149,37 @@ function init() {
               //      return;
              //   }
             }
+
+            if (distanceFromView(headers[1].target) < toc.clientHeight) {
+                if (!toc.classList.contains("end")) {
+                    toc.classList.add("end");
+                    toc.style.top = (content.clientHeight - toc.clientHeight) +"px";
+                }
+            } else {
+                if (toc.classList.contains("end")) {
+                    toc.classList.remove("end");
+                    toc.style.top = (tocoffset - offset) + "px";
+                }
+            }
+
             for (let el of headers) {
+                
                 if (distanceFromView(el.target) < (tocoffset - offset)) {
                     setCurrent(el.source);
+
+                    if (toc.classList.contains("begin")) {
+                        toc.classList.remove("begin");
+                    }
+                  
+
                     return;
                 }
             }
+
+            if (!toc.classList.contains("begin")){
+                toc.classList.add("begin");
+            }
+
             setCurrent(headers[headers.length-1].source);
         }
 
@@ -174,3 +205,21 @@ function init() {
 }
 
 init();
+
+
+
+/**
+ *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+ *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables */
+
+var disqus_config = function () {
+    this.page.url = "@deeplink";  // Replace PAGE_URL with your page's canonical URL variable
+    this.page.identifier = "@Model.Metadata.Alias.Trim('/',' ')"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+
+(function () { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//earthml.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', new Date().getTime().toString());
+    (d.head || d.body).appendChild(s);
+})();

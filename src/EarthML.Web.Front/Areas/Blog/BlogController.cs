@@ -31,10 +31,10 @@ namespace EarthML.Web.Front.Areas.Blog
     public class BlogController : Controller
     {
         [Route("[controller]")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index([FromServices] IBlogEngine blogs)
         {
 
-            return View();
+            return View(await blogs.GetArticlesAsync());
         }
 
 
@@ -43,6 +43,10 @@ namespace EarthML.Web.Front.Areas.Blog
         {
 
             var model = await blogs.GetArticleAsync(article.Trim('/'));
+            if (model.Todos.Any(b => !b.Checked))
+            {
+               
+            }
 
             return View(viewName: $"{model.Metadata.Layout}", model: model);
 

@@ -398,13 +398,16 @@ a, a > code {
         @color: "@{val}-@{counter}";
         background-color: @@color;
         color:@foreground;
+        a{
+            color:@foreground;
+        }
     }
 }
 
 .loop(color-primary,4,#403d34);
 .loop(color-complement,4,#fcfbf7);
 .loop(color-secondary-1,4,#403d34);
-.loop(color-secondary-2,4,#403d34);
+.loop(color-secondary-2,4,white);
 
 .bg-white {
     background-color: white;
@@ -817,6 +820,7 @@ nav.headroom--top-top .eml-logo .logo {
 }
 
 
+
 .primary-fill {
     fill: @color-primary-0;
 }
@@ -834,6 +838,18 @@ nav.headroom--top-top .eml-logo .logo {
 }
 
 
+pre {
+    margin-bottom: 1em;
+    padding: 5px;
+    padding-bottom: 20px !ie7;
+    width: auto;
+    width: 650px !ie7;
+    max-height: 600px;
+    overflow: auto;
+    font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
+    font-size: 13px;
+    background-color: #eff0f1;
+}
 
 
 @import "font-awesome/less/font-awesome.less";

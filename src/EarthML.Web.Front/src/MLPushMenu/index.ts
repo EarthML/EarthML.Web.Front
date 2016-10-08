@@ -82,7 +82,7 @@ export class MLPushMenu {
     menuItems: HTMLLIElement[];
     levelBack: HTMLElement[];
     // event type (if mobile use touch events)
-    eventtype = Modernizr.touchevents ? 'touchstart' : 'click';
+
     constructor(private el: HTMLElement, private trigger: HTMLElement, options?) {
 
         this.trigger = trigger;
@@ -115,21 +115,27 @@ export class MLPushMenu {
         // add the class mp-overlap or mp-cover to the main element depending on options.type
         classie.add(this.el, 'mp-' + this.options.type);
         // initialize / bind the necessary events
-        this._initEvents();
+
+        this._initEvents("click");
+        if (Modernizr.touchevents) {
+            this._initEvents("touchstart");
+             
+
+        }
     }
 
-    private _initEvents() {
+    private _initEvents(eventtype: string) {
         var self = this;
 
         // the menu should close if clicking somewhere on the body
         var bodyClickFn = function (el) {
             self._resetMenu();
-            el.removeEventListener(self.eventtype, bodyClickFn);
+            el.removeEventListener(eventtype, bodyClickFn);
         };
 
         // open (or close) the menu
-        console.log(this.eventtype);
-        this.trigger.addEventListener(this.eventtype, function (ev) {
+ 
+        this.trigger.addEventListener(eventtype, function (ev) {
             console.log("trigger");
             ev.stopPropagation();
             ev.preventDefault();
@@ -139,7 +145,7 @@ export class MLPushMenu {
             else {
                 self._openMenu();
                 // the menu should close if clicking somewhere on the body (excluding clicks on the menu)
-                document.addEventListener(self.eventtype, function (ev) {
+                document.addEventListener(eventtype, function (ev) {
                     if (self.open && !hasParent(ev.target, self.el.id)) {
                         bodyClickFn(this);
                     }
@@ -152,7 +158,7 @@ export class MLPushMenu {
             // check if it has a sub level
             var subLevel = el.querySelector('div.mp-level');
             if (subLevel) {
-                el.querySelector('a').addEventListener(self.eventtype, function (ev) {
+                el.querySelector('a').addEventListener(eventtype, function (ev) {
                     ev.preventDefault();
                     var level = closest(el, 'mp-level').getAttribute('data-level');
                     if (self.level <= level) {
@@ -167,7 +173,7 @@ export class MLPushMenu {
         // closing the sub levels :
         // by clicking on the visible part of the level element
         this.levels.forEach(function (el, i) {
-            el.addEventListener(self.eventtype, function (ev) {
+            el.addEventListener(eventtype, function (ev) {
                 ev.stopPropagation();
                 var level = parseInt( el.getAttribute('data-level'));
                 if (self.level > level) {
@@ -179,7 +185,7 @@ export class MLPushMenu {
 
         // by clicking on a specific element
         this.levelBack.forEach(function (el, i) {
-            el.addEventListener(self.eventtype, function (ev) {
+            el.addEventListener(eventtype, function (ev) {
                 ev.preventDefault();
                 var level = closest(el, 'mp-level').getAttribute('data-level');
                 if (self.level <= level) {

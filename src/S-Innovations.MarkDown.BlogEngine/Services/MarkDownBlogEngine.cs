@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Markdig;
+using Markdig.Extensions.TaskLists;
 using Markdig.Renderers;
 using Markdig.Renderers.Html;
 using Markdig.Syntax;
@@ -143,6 +144,22 @@ namespace SInnovations.MarkDown.BlogEngine.Services
                     using (var txtWriter = new StringWriter())
                     {
                         var renderer = new HtmlRenderer(txtWriter);
+                        var tasks = new List<ArticleTodoes>();
+                        if(markdownDocument.First() is ListBlock)
+                        {
+                            var todoes = markdownDocument.First() as ListBlock;
+
+                            //  var first=  todoes.First() as ListItemBlock;
+                            tasks.AddRange(todoes.OfType<ListItemBlock>().SelectMany(l => l.OfType<ParagraphBlock>()
+                            .SelectMany(block => block.Inline.OfType<TaskList>().ToArray()))
+                             .Select(t => new ArticleTodoes { Checked = t.Checked, Label = GetText(t.NextSibling as LiteralInline) }));
+
+
+                   
+
+
+                            markdownDocument.Remove(todoes);
+                        }
 
                         if (markdownDocument.First() is HeadingBlock)
                         {
@@ -179,7 +196,8 @@ namespace SInnovations.MarkDown.BlogEngine.Services
                             MarkdownHtml = txtWriter.ToString(),
                             Metadata = meta.ToObject<ArticleMetadata>(),
                             History = history.ToList(),
-                            TableOfContent = mdParsed
+                            TableOfContent = mdParsed,
+                            Todos = tasks.ToArray(),
                         };
 
                         articles.Add(model.Metadata.Alias.Trim('/'), model);
@@ -188,6 +206,11 @@ namespace SInnovations.MarkDown.BlogEngine.Services
 
                 }
             }
+        }
+
+        private string GetText(LiteralInline literalInline)
+        {
+            return literalInline.Content.Text.Substring(literalInline.Content.Start, literalInline.Content.Length);
         }
 
         public Task<ArticleModel> GetArticleAsync(string key)
@@ -217,6 +240,11 @@ namespace SInnovations.MarkDown.BlogEngine.Services
 
             return Task.FromResult(articles[key]);
 
+        }
+
+        public Task<List<ArticleModel>> GetArticlesAsync()
+        {
+            return Task.FromResult(articles.Values.Where(c=>!c.Todos.Any(t=>!t.Checked)).ToList());
         }
     }
 }
