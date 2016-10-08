@@ -8,6 +8,7 @@ import Headroom = require("headroom");
 
  
 const header = document.querySelector(".article-open-item") as HTMLElement;
+const content = document.querySelector(".article-content") as HTMLElement;
 const toc = document.querySelector("#article-toc") as HTMLElement;
 
 window["toc"] = toc;
@@ -31,7 +32,9 @@ function calcOffsets() {
         tocoffset += offsetEl.offsetTop;
         offsetEl = offsetEl.offsetParent as HTMLElement;
     }
+    console.log([offset, tocoffset]);
 
+    offset = tocoffset - 70;
 }
 calcOffsets();
  
@@ -79,6 +82,7 @@ let tocHeadroom = new Headroom(header,
         onNotTop: function () {
          //   toc.style.position = "fixed";
             toc.style.top = (tocoffset - offset) + "px";
+
         },
         // callback when at bottom of page, `this` is headroom object
         // onBottom: function () { },
@@ -145,12 +149,37 @@ function init() {
               //      return;
              //   }
             }
+
+            if (distanceFromView(headers[1].target) < toc.clientHeight) {
+                if (!toc.classList.contains("end")) {
+                    toc.classList.add("end");
+                    toc.style.top = (content.clientHeight - toc.clientHeight) +"px";
+                }
+            } else {
+                if (toc.classList.contains("end")) {
+                    toc.classList.remove("end");
+                    toc.style.top = (tocoffset - offset) + "px";
+                }
+            }
+
             for (let el of headers) {
+                
                 if (distanceFromView(el.target) < (tocoffset - offset)) {
                     setCurrent(el.source);
+
+                    if (toc.classList.contains("begin")) {
+                        toc.classList.remove("begin");
+                    }
+                  
+
                     return;
                 }
             }
+
+            if (!toc.classList.contains("begin")){
+                toc.classList.add("begin");
+            }
+
             setCurrent(headers[headers.length-1].source);
         }
 

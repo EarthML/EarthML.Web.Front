@@ -98,7 +98,7 @@ function post(action, value) {
 var playing = false;
 
 function listener(event) {
-    console.log(event);
+   
 
     if (event.target === video && event.type === "playing") {
         NProgress.set(0.8);

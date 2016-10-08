@@ -39,7 +39,28 @@
                 <h2 lass="graf graf--h4 graf-after--h3 graf--subtitle">@Model.Metadata.Subtitle</h2>
             }
 
-
+            <div class="article-social-icons">
+                <ul>
+                    <li class="social-icons-link">
+                        <a class="fa fa-twitter" href="https://twitter.com/share?url=@deeplink&amp;text=@shareText" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"></a>
+                    </li>
+                    <li class="social-icons-link">
+                        <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
+                    </li>
+                    <li class="social-icons-link">
+                        <a class="fa fa-google-plus" href="https://plus.google.com/share?url=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
+                    </li>
+                    <li class="social-icons-link linkedin">
+                        <a class="fa fa-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
+                    </li>
+                    <li class="social-icons-link reddit">
+                        <a class="fa fa-reddit-alien" href="https://reddit.com/submit?url=@deeplink&amp;title=@shareText" onclick="window.open(this.href, 'facebook-share','width=580,height=550');return false;"></a>
+                    </li>
+                    <li class="social-icons-link">
+                        <a class="fa fa-envelope" href="mailto:?subject=@shareText&amp;body=@deeplink"></a>
+                    </li>
+                </ul>
+            </div>
 
 
             <span class="article-info">@Model.Metadata.Date</span>
@@ -48,46 +69,26 @@
 
         <div class="clamp toc-release">
             <div id="article-toc" class="toc">
-                <div class="article-social-icons">
-                    <ul>
-                        <li class="social-icons-link">
-                            <a class="fa fa-twitter" href="https://twitter.com/share?url=@deeplink&amp;text=@shareText" onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;"></a>
-                        </li>
-                        <li class="social-icons-link">
-                            <a class="fa fa-facebook" href="https://www.facebook.com/sharer/sharer.php?u=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
-                        </li>
-                        <li class="social-icons-link">
-                            <a class="fa fa-google-plus" href="https://plus.google.com/share?url=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
-                        </li>
-                        <li class="social-icons-link linkedin">
-                            <a class="fa fa-linkedin" href="https://www.linkedin.com/shareArticle?mini=true&amp;url=@deeplink" onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;"></a>
-                        </li>
-                        <li class="social-icons-link reddit">
-                            <a class="fa fa-reddit-alien" href="https://reddit.com/submit?url=@deeplink&amp;title=@shareText" onclick="window.open(this.href, 'facebook-share','width=580,height=550');return false;"></a>
-                        </li>
-                        <li class="social-icons-link">
-                            <a class="fa fa-envelope" href="mailto:?subject=@shareText&amp;body=@deeplink"></a>
-                        </li>
-                    </ul>
-                </div>
+                
 
                 @if (Model.TableOfContent?.Any() ?? false)
                 {
+                    <span>In this article:</span>
                     <nav class="nav nav--desta">
 
-
+                        <a href="#intro" class="nav__item nav__item--current" aria-label="Intro"><svg class="nav__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-triangle"></use></svg><span class="nav__item-title">Intro</span></a>
                         @foreach (var entry in Model.TableOfContent)
                         {
-                            <a href="#@entry.Id" class="nav__item @(entry == Model.TableOfContent.First()?"nav__item--current":"")" aria-label="@entry.Title"><svg class="nav__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-triangle"></use></svg><span class="nav__item-title">@entry.Title</span></a>
+                            <a href="#@entry.Id" class="nav__item" aria-label="@entry.Title"><svg class="nav__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-triangle"></use></svg><span class="nav__item-title">@entry.Title</span></a>
                         }
-
+                        <a href="#disqus_thread" class="nav__item" aria-label="Comments"><svg class="nav__icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-triangle"></use></svg><span class="nav__item-title">Comments</span></a>
                     </nav>
 
                 }
             </div>
         </div>
 
-        <section class="article-content" data-class="bg-white-primary  bg-light">
+        <section id="intro" class="article-content" data-class="bg-white-primary  bg-light">
             @Html.Raw(Model.MarkdownHtml)
         </section>
 
