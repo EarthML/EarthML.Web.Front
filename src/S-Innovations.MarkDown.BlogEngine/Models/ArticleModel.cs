@@ -6,6 +6,13 @@ using System.Threading.Tasks;
 
 namespace SInnovations.MarkDown.BlogEngine.Models
 {
+   
+    public class ArticleTodoes
+    {
+        public bool Checked { get; set; }
+        public string Label { get; set; }
+
+    }
     public class ArticleModel
     {
         public string MarkdownHtml { get; set; }
@@ -13,6 +20,6 @@ namespace SInnovations.MarkDown.BlogEngine.Models
 
         public List<GitCommit> History { get; set; }
         public TableOfContentEntry[] TableOfContent { get; set; }
-
+        public ArticleTodoes[] Todos { get; set; }
     }
 }

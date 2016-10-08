@@ -43,6 +43,10 @@ namespace EarthML.Web.Front.Areas.Blog
         {
 
             var model = await blogs.GetArticleAsync(article.Trim('/'));
+            if (model.Todos.Any(b => !b.Checked))
+            {
+               
+            }
 
             return View(viewName: $"{model.Metadata.Layout}", model: model);
 
