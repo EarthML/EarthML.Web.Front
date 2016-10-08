@@ -10,7 +10,7 @@
  */
 
 
-import * as classie from "classie";
+//import * as classie from "classie";
 
 
 import Modernizr = require("modernizr");
@@ -36,13 +36,13 @@ function hasParent(e, id) {
 
 // returns the depth of the element "e" relative to element with id=id
 // for this calculation only parents with classname = waypoint are considered
-function getLevelDepth(e, id, waypoint, cnt?) {
+function getLevelDepth(e: HTMLElement, id, waypoint, cnt?) {
     cnt = cnt || 0;
     if (e.id.indexOf(id) >= 0) return cnt;
-    if (classie.has(e, waypoint)) {
+    if (e.classList.contains(waypoint)) {
         ++cnt;
     }
-    return e.parentNode && getLevelDepth(e.parentNode, id, waypoint, cnt);
+    return e.parentNode && getLevelDepth(e.parentNode as HTMLElement, id, waypoint, cnt);
 }
 
 // http://coveroverflow.com/a/11381730/989439
@@ -53,11 +53,11 @@ function mobilecheck() {
 }
 
 // returns the closest element to 'e' that has class "classname"
-function closest(e, classname) {
-    if (classie.has(e, classname)) {
+function closest(e: HTMLElement, classname): HTMLElement {
+    if (e.classList.contains(classname)) {
         return e;
     }
-    return e.parentNode && closest(e.parentNode, classname);
+    return e.parentNode && closest(e.parentNode as HTMLElement, classname);
 }
 
 const MLPushMenuDefaults = {
@@ -113,7 +113,7 @@ export class MLPushMenu {
 
 
         // add the class mp-overlap or mp-cover to the main element depending on options.type
-        classie.add(this.el, 'mp-' + this.options.type);
+        this.el.classList.add('mp-' + this.options.type);
         // initialize / bind the necessary events
 
         this._initEvents("click");
@@ -156,14 +156,14 @@ export class MLPushMenu {
         // opening a sub level menu
         this.menuItems.forEach(function (el, i) {
             // check if it has a sub level
-            var subLevel = el.querySelector('div.mp-level');
+            var subLevel = el.querySelector('div.mp-level') as HTMLElement;
             if (subLevel) {
                 el.querySelector('a').addEventListener(eventtype, function (ev) {
                     ev.preventDefault();
-                    var level = closest(el, 'mp-level').getAttribute('data-level');
+                    var level = parseInt( closest(el, 'mp-level').getAttribute('data-level'));
                     if (self.level <= level) {
                         ev.stopPropagation();
-                        classie.add(closest(el, 'mp-level'), 'mp-level-overlay');
+                        closest(el, 'mp-level').classList.add('mp-level-overlay');
                         self._openMenu(subLevel);
                     }
                 });
@@ -187,19 +187,19 @@ export class MLPushMenu {
         this.levelBack.forEach(function (el, i) {
             el.addEventListener(eventtype, function (ev) {
                 ev.preventDefault();
-                var level = closest(el, 'mp-level').getAttribute('data-level');
+                var level = parseInt(closest(el, 'mp-level').getAttribute('data-level'));
                 if (self.level <= level) {
                     ev.stopPropagation();
-                    self.level = closest(el, 'mp-level').getAttribute('data-level') - 1;
+                    self.level = parseInt(closest(el, 'mp-level').getAttribute('data-level')) - 1;
                     self.level === 0 ? self._resetMenu() : self._closeMenu();
                 }
             });
         });
     }
 
-    private _deepestLevel;
+    private _deepestLevel: HTMLElement;
 
-    private _openMenu(subLevel?) {
+    private _openMenu(subLevel?: HTMLElement) {
         // increment level depth
         ++this.level;
 
@@ -215,23 +215,23 @@ export class MLPushMenu {
             // need to reset the translate value for the level menus that have the same level depth and are not open
             for (var i = 0, len = this.levels.length; i < len; ++i) {
                 var levelEl = this.levels[i];
-                if (levelEl != subLevel && !classie.has(levelEl, 'mp-level-open')) {
+                if (levelEl != subLevel && !levelEl.classList.contains('mp-level-open')) {
                     this._setTransform('translate3d(-100%,0,0) translate3d(' + -1 * levelFactor + 'px,0,0)', levelEl);
                 }
             }
         }
         // add class mp-pushed to main wrapper if opening the first time
         if (this.level === 1) {
-            classie.add(this.wrapper, 'mp-pushed');
+            this.wrapper.classList.add('mp-pushed');
             this.open = true;
         }
         // add class mp-level-open to the opening level element
-        classie.add(subLevel || this.levels[0], 'mp-level-open');
+        (subLevel || this.levels[0]).classList.add('mp-level-open');
         if (this._deepestLevel) {
-            classie.remove(this._deepestLevel, 'mp-level-deepest-open');
+            this._deepestLevel.classList.remove('mp-level-deepest-open');
         }
         this._deepestLevel = subLevel || this.levels[0];
-        classie.add(this._deepestLevel, 'mp-level-deepest-open');
+        this._deepestLevel.classList.add('mp-level-deepest-open');
 
 
     }
@@ -241,7 +241,7 @@ export class MLPushMenu {
         this._setTransform('translate3d(0,0,0)');
         this.level = 0;
         // remove class mp-pushed from main wrapper
-        classie.remove(this.wrapper, 'mp-pushed');
+        this.wrapper.classList.remove('mp-pushed');
         this._toggleLevels();
         this.open = false;
     }
@@ -261,12 +261,12 @@ export class MLPushMenu {
     private _toggleLevels() {
         for (var i = 0, len = this.levels.length; i < len; ++i) {
             var levelEl = this.levels[i];
-            if (parseInt( levelEl.getAttribute('data-level') )>= this.level + 1) {
-                classie.remove(levelEl, 'mp-level-open');
-                classie.remove(levelEl, 'mp-level-overlay');
+            if (parseInt(levelEl.getAttribute('data-level')) >= this.level + 1) {
+                levelEl.classList.remove('mp-level-open');
+                levelEl.classList.remove('mp-level-overlay');
             }
             else if (Number(levelEl.getAttribute('data-level')) == this.level) {
-                classie.remove(levelEl, 'mp-level-overlay');
+                levelEl.classList.remove('mp-level-overlay');
             }
         }
     }

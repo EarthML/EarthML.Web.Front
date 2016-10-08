@@ -4,12 +4,12 @@ const player = document.querySelector("#bg-player") as HTMLIFrameElement;
 const video = document.querySelector("#bg-player") as HTMLVideoElement;
 const videoBG = document.querySelector("#video-background-img") as HTMLDivElement;
 export const scroller = document.querySelector(".scroller");
-import * as NProgress from "nprogress"; 
+import * as NProgress from "nprogress";
 import Headroom = require("headroom");
-import Modernizr = require("modernizr"); 
+import Modernizr = require("modernizr");
 
 
-import "class_list_ployfill";
+//import "class_list_ployfill";
 import { MLPushMenu } from "./MLPushMenu/index";
 
 //import "modernizr";
@@ -34,7 +34,7 @@ export function scrollToTop(scrollDuration) {
 }
 
 export function scrollTo(offsetTop: number, scrollDuration, element: Element = document.body) {
-              
+
     var cosParameter = (offsetTop - element.scrollTop) / 2,
         scrollCount = 0,
         oldTimestamp = performance.now();
@@ -45,18 +45,18 @@ export function scrollTo(offsetTop: number, scrollDuration, element: Element = d
 
         element.scrollTop += offsetTop - element.scrollTop
             - Math.round(cosParameter + cosParameter * Math.cos(scrollCount));
-  
+
         oldTimestamp = newTimestamp;
         window.requestAnimationFrame(step);
-       
+
     }
 
-    window.requestAnimationFrame(step);           
+    window.requestAnimationFrame(step);
 }
 
 export function scrollToElement(node: HTMLElement, scrollDuration, element: Element = document.body) {
     let offset = -70;
-   
+
 
     let offsetEl = node;
     while (offsetEl && offsetEl !== scroller) {
@@ -65,20 +65,13 @@ export function scrollToElement(node: HTMLElement, scrollDuration, element: Elem
         offsetEl = offsetEl.offsetParent as HTMLElement;
     }
 
-   
+
 
     scrollTo(offset, scrollDuration, element);
 
 }
 
-document.querySelector("#scrollMainContent").addEventListener("click", (e) => {
-    let scrollValue = (document.querySelector("#maincontent") as HTMLElement).offsetTop - navHeight;
-    if ((document.querySelector("#maincontent") as HTMLElement).clientHeight + 1 <= scrollValue) {
-        scrollValue = (document.querySelector("#maincontent") as HTMLElement).clientHeight;
-    }
 
-    scrollTo(scrollValue, 600, scroller);
-},true);
 
 function post(action, value) {
     // Helper function for sending a message to the player
@@ -98,11 +91,11 @@ function post(action, value) {
 var playing = false;
 
 function listener(event) {
-   
+
 
     if (event.target === video && event.type === "playing") {
         NProgress.set(0.8);
-       
+
         setTimeout(() => {
             if (!playing) {
                 NProgress.done();
@@ -113,7 +106,7 @@ function listener(event) {
         }, 500);
 
     } else if (event.target === video && event.type === "progress") {
-        
+
 
         if (!playing) {
             NProgress.configure({
@@ -131,14 +124,14 @@ function listener(event) {
         } else {
             NProgress.done();
         }
-      
+
     } else if (event.target === video && event.type === "ended") {
         player.style.zIndex = "-1";
         videoBG.style.display = "block";
         document.querySelector(".logo-content").classList.remove("loading");
 
         NProgress.done();
-       
+
         //if (scroller.scrollTop === 0) {
         //    scrollTo(Math.min((document.querySelector("#maincontent") as HTMLElement).clientHeight, (document.querySelector("#maincontent") as HTMLElement).offsetTop - navHeight), 600, scroller);
         //}
@@ -150,7 +143,7 @@ function listener(event) {
     }
 
     var data = JSON.parse(event.data);
-  //  console.log(data);
+    //  console.log(data);
 
     switch (data.event) {
         case 'ready':
@@ -178,7 +171,7 @@ function listener(event) {
                 }, 0);
             }
 
-         //   console.log(data.data.percent);
+            //   console.log(data.data.percent);
             if (data.data.percent === 1) {
 
                 player.style.zIndex = "-1";
@@ -190,11 +183,11 @@ function listener(event) {
     }
 };
 
- 
+
 
 addEventListener("message", listener, false)
 let headerHeight = document.querySelector("main header").clientHeight; //document.querySelector(".video-background").clientHeight;
- 
+
 var myElement = document.querySelector("header nav");
 
 // construct an instance of Headroom, passing the element
@@ -223,9 +216,9 @@ let headroom = new Headroom(myElement,
             // when below offset
             notTop: "headroom--not-top",
             // when at bottom of scoll area
-         //   bottom: "headroom--bottom",
+            //   bottom: "headroom--bottom",
             // when not at bottom of scroll area
-        //    notBottom: "headroom--not-bottom"
+            //    notBottom: "headroom--not-bottom"
         },
         // element to listen to scroll events on, defaults to `window`
         // scroller: someElement,
@@ -238,9 +231,9 @@ let headroom = new Headroom(myElement,
         // callback when below offset, `this` is headroom object
         onNotTop: function () { },
         // callback when at bottom of page, `this` is headroom object
-       // onBottom: function () { },
+        // onBottom: function () { },
         // callback when moving away from bottom of page, `this` is headroom object
-      //  onNotBottom: function () { }
+        //  onNotBottom: function () { }
     });
 // initialise
 headroom.init();
@@ -310,10 +303,10 @@ window.addEventListener("resize", function () {
 }, false);
 
 Modernizr.on('videoautoplay', function (result) {
-    
+
     if (result && video.getAttribute("data-src")) {
         video.src = video.getAttribute("data-src");// "EarthMlIntro3-SD.mp4";
-        
+
     } else {
         NProgress.done();
         player.style.zIndex = "-1";
@@ -323,9 +316,22 @@ Modernizr.on('videoautoplay', function (result) {
 });
 
 let last = [];
-let sections = document.querySelectorAll("main section");
-document.body.classList.add.apply(document.body.classList, last = sections.item(0).getAttribute("data-class").split(' ').filter(f => f));
+let sections: HTMLElement[] = Array.prototype.slice.call(document.querySelectorAll("main section"));
+if (sections.length) {
+    document.body.classList.add.apply(document.body.classList, last = sections[0].getAttribute("data-class").split(' ').filter(f => f));
 
+    document.querySelector("#scrollMainContent").addEventListener("click", (e) => {
+        let scrollValue = (document.querySelector("#maincontent") as HTMLElement).offsetTop - navHeight;
+        if ((document.querySelector("#maincontent") as HTMLElement).clientHeight + 1 <= scrollValue) {
+            scrollValue = (document.querySelector("#maincontent") as HTMLElement).clientHeight;
+        }
+
+        scrollTo(scrollValue, 600, scroller);
+    }, true);
+    document.querySelector("#scrollMainContent").parentElement.style.display = "block";
+} else {
+   
+}
 let offset = (window.innerHeight - navHeight) / 2 + navHeight;
 export function isScrolledIntoView(el) {
     var elementTop = el.getBoundingClientRect().top;
@@ -337,30 +343,29 @@ export function isScrolledIntoView(el) {
 export function distanceFromView(el) {
     var elementTop = el.getBoundingClientRect().top;
     var elementBottom = el.getBoundingClientRect().bottom;
-    return elementTop ;
+    return elementTop;
 }
 
 let scrollStopTimer = null;
 function onScrollWrapper() {
 
     clearTimeout(scrollStopTimer);
-    scrollStopTimer=  setTimeout(onScroll,50);
+    scrollStopTimer = setTimeout(onScroll, 50);
 }
 function onScroll() {
     console.log('scrolling');
 
-    for (let i = 0; i < sections.length; i++) {
-        let el = sections.item(i);
+    for (let el of sections) {
         if (isScrolledIntoView(el)) {
             console.log(el);
 
             if (last.join('') !== el.getAttribute("data-class").split(' ').filter(f => f).join('')) {
-            if (last.length) {
-                document.body.classList.remove.apply(document.body.classList, last);
-            }
+                if (last.length) {
+                    document.body.classList.remove.apply(document.body.classList, last);
+                }
 
-            document.body.classList.add.apply(document.body.classList, (last = el.getAttribute("data-class").split(' ').filter(f=>f)));
-               
+                document.body.classList.add.apply(document.body.classList, (last = el.getAttribute("data-class").split(' ').filter(f => f)));
+
             }
             return;
         }
@@ -383,7 +388,7 @@ var menu = new MLPushMenu(document.getElementById('mp-menu'), document.getElemen
 
 
 window.onbeforeunload = function (e) {
-    window.sessionStorage.setItem("__scroll", JSON.stringify({ value: scroller.scrollTop.toString(), href: window.location.href  }));
+    window.sessionStorage.setItem("__scroll", JSON.stringify({ value: scroller.scrollTop.toString(), href: window.location.href }));
 };
 
 
@@ -398,7 +403,7 @@ window.onbeforeunload = function (e) {
          * Establish events, and fix initial scroll position if a hash is provided.
          */
         init: function () {
-            
+
             this.scrollToCurrent();
             window.addEventListener('hashchange', this.scrollToCurrent.bind(this));
             document.body.addEventListener('click', this.delegateAnchors.bind(this));
@@ -420,11 +425,11 @@ window.onbeforeunload = function (e) {
          */
         scrollIfAnchor: function (href, pushToHistory) {
             var match, rect, anchorOffset;
-            
+
             if (!this.ANCHOR_REGEX.test(href)) {
                 return false;
             }
-           
+
             match = document.getElementById(href.slice(1));
 
             if (match) {
@@ -445,7 +450,7 @@ window.onbeforeunload = function (e) {
          */
         scrollToCurrent: function () {
             if (!this.scrollIfAnchor(window.location.hash)) {
-                let a = JSON.parse(window.sessionStorage.getItem("__scroll")||"{}");
+                let a = JSON.parse(window.sessionStorage.getItem("__scroll") || "{}");
                 if (a.value && a.href === window.location.href) {
                     scroller.scrollTop = a.value;
                     window.sessionStorage.setItem("__scroll", "{}");
