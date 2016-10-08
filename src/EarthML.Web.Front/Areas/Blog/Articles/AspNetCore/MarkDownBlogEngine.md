@@ -18,6 +18,11 @@ tags:
 - AspNet core
 ---
 
+- [ ] Check how code is rendered
+- [ ] Check how task list is rendered
+- [ ] Finalize section on Git History, example code and links to repository code
+- [ ] Finalize the post, proof read.
+
 # Using Markdown for blogging on AspNet Core
 
 Many of the small projects that i work on in my spare time often evolve around optimizing the experience or process while getting things done. For me this is a very meditating way of working with code compared with the daily work where focus often is the opposite: *Deliver the most value per time unit*. A coworker of mine and I has started to use the phrase - "Where is the time machine?" for when something new and shiny pops under our radar, meaning we need more time to play with all the technology we are exposed to.
@@ -173,9 +178,3 @@ Combining the build info shown above with git history of the article markdown fi
 
 
 
-## Todos
-
-- [ ] Check how code is rendered
-- [ ] Check how task list is rendered
-- [ ] Finalize section on Git History, example code and links to repository code
-- [ ] Finalize the post, proof read.
