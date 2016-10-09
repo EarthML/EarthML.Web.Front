@@ -1,0 +1,29 @@
+﻿@{
+    Context.Response.ContentType = "text/xml";
+    Layout = null;
+}
+<?xml version="1.0" encoding="UTF-8" ?>
+<Response>
+   
+
+    @switch ((int)Model.Choice)
+    {
+        case 1:
+            <Sms from="+15876000323" to="+4560613151">Incoming call from @Model.From</Sms>
+            <Say voice="alice">Thanks</Say>
+
+            break;
+
+        case 2:
+            <Dial timeout="10" record="true">+4560613151</Dial>
+
+            break;
+        default:
+
+            <Say voice="alice">Sorry, your response was invalid.</Say>
+            <Redirect>Welcome</Redirect>
+
+            break;
+
+    }
+</Response>

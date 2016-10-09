@@ -1,0 +1,15 @@
+﻿@{
+   Context.Response.ContentType = "text/xml";
+   Layout = null;
+}
+<?xml version="1.0" encoding="UTF-8" ?>
+<Response>
+    <Gather action="./HandleUserInput" numDigits="1">
+        <Say voice="alice">Welcome to EarthML</Say>
+        <Say voice="alice">Do you want us to call you back, press 1.</Say>
+        <Say voice="alice">To speak to an agent, press 2.</Say>
+    </Gather>
+    <!-- If customer doesn't input anything, prompt and try again. -->
+    <Say voice="alice">Sorry, I didn't get your response.</Say>
+    <Redirect>Welcome</Redirect>
+</Response>
