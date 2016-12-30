@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 
 #if NET46
-using Microsoft.Practices.Unity;
+using System.Fabric;
 using Serilog;
 using SInnovations.ServiceFabric.RegistrationMiddleware.AspNetCore.Services;
 using SInnovations.ServiceFabric.Unity;
@@ -30,21 +28,16 @@ namespace EarthML.Web.Front
                //  .WriteTo.Trace()
                .CreateLogger();
 
-
-                using (var container = new UnityContainer().AsFabricContainer())
-                {
-                    var loggerfac = new LoggerFactory() as ILoggerFactory;
-                    loggerfac.AddSerilog();
-                    container.RegisterInstance(loggerfac);
+                using (var container = FabricRuntime.Create()
+                    .AsFabricContainer()
+                    .ConfigureLogging(new LoggerFactory().AddSerilog()))
+                {  
 
                     container.WithKestrelHosting<Startup>("EarthMLFrontType",
                         new KestrelHostingServiceOptions {
                             ServiceEndpointName = "ServiceEndpoint",
                             ReverseProxyPath = "/"
                         });
-                    
-
-
 
                     Thread.Sleep(Timeout.Infinite);
                 }
