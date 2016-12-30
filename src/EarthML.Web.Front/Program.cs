@@ -36,10 +36,13 @@ namespace EarthML.Web.Front
                     var loggerfac = new LoggerFactory() as ILoggerFactory;
                     loggerfac.AddSerilog();
                     container.RegisterInstance(loggerfac);
-                    container.RegisterInstance(new KestrelHostingServiceOptions { ServiceEndpointName = "ServiceEndpoint", ReverseProxyPath ="/" });
 
-                    container.WithStatelessService<KestrelHostingService<Startup>>("EarthMLFrontType");
-
+                    container.WithKestrelHosting<Startup>("EarthMLFrontType",
+                        new KestrelHostingServiceOptions {
+                            ServiceEndpointName = "ServiceEndpoint",
+                            ReverseProxyPath = "/"
+                        });
+                    
 
 
 
