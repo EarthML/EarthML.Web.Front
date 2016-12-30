@@ -1,4 +1,5 @@
 ﻿
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -18,33 +19,32 @@ namespace EarthML.Web.Front
     {
         public static void Main(string[] args)
         {
-
             if (args.Contains("--serviceFabric"))
             {
 #if NET46
-
                 var log = new LoggerConfiguration()
                .MinimumLevel.Debug()
-               //  .WriteTo.Trace()
                .CreateLogger();
 
                 using (var container = FabricRuntime.Create()
                     .AsFabricContainer()
                     .ConfigureLogging(new LoggerFactory().AddSerilog()))
-                {  
+                {
 
                     container.WithKestrelHosting<Startup>("EarthMLFrontType",
-                        new KestrelHostingServiceOptions {
+                        new KestrelHostingServiceOptions
+                        {
                             ServiceEndpointName = "ServiceEndpoint",
                             ReverseProxyPath = "/"
                         });
 
                     Thread.Sleep(Timeout.Infinite);
                 }
+
+#else
+                Console.WriteLine("Sorry, service fabric do not support dotnet core yet");
 #endif
-            }
-            else
-            {
+            } else {
 
                 var host = new WebHostBuilder()
                     .UseKestrel()
