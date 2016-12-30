@@ -24,7 +24,8 @@
                 "nprogress": "libs/nprogress/nprogress",
                 "headroom": "libs/headroom/headroom",
                 "classie": "libs/classie/classie",
-                "class_list_ployfill": "libs/classie/class_list_ployfill"
+                "class_list_ployfill": "libs/classie/class_list_ployfill",
+                "knockout":"libs/knockout/knockout-latest"
             },
             shim: {
                 "nprogress": {
@@ -35,6 +36,22 @@
                 }
             },
 
+            packages: [
+                {
+                    name: "EarthML",
+                    location: "libs/EarthML",
+                    main: "index",
+                },
+                {
+                    name: "EarthML/MLPushMenu",
+                    main: "index",
+                },
+                {
+                    name: "kolayout",
+                    main: "index",
+                    location:"libs/kolayout/src"
+                }
+            ]
 
         });
 
@@ -222,7 +239,7 @@
         require(["nprogress"], function (NProgress) {
             NProgress.configure({ minimum: 0.4 });
             NProgress.start();
-            require([ @(RenderSection("RequireJsDeps", false) ?? Html.Raw(@"""libs/EarthML/index"""))],
+            require([ @(RenderSection("RequireJsDeps", false) ?? Html.Raw(@"""EarthML"""))],
                function (module) {
 
                });

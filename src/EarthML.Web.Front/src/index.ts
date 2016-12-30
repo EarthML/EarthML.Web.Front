@@ -8,8 +8,13 @@ import * as NProgress from "nprogress";
 import Headroom = require("headroom");
 import Modernizr = require("modernizr");
 
+import { KoLayout } from "kolayout";
+import { isDefined } from "kolayout/utils";
+
 
 //import "class_list_ployfill";
+//import { MLPushMenu } from "./MLPushMenu/index";
+
 import { MLPushMenu } from "./MLPushMenu/index";
 
 //import "modernizr";
@@ -17,6 +22,11 @@ import { MLPushMenu } from "./MLPushMenu/index";
 
 const navHeight = 65;
 
+export class MainLayout extends KoLayout {
+    constructor() {
+        super({ name:"cool" })
+    }
+}
 
 export function scrollToTop(scrollDuration) {
     var cosParameter = window.scrollY / 2,

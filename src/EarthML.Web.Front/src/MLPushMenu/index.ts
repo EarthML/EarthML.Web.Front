@@ -97,7 +97,7 @@ export class MLPushMenu {
 
 
     private _init() {
-
+        
 
         // the moving wrapper
         this.wrapper = document.getElementById('mp-pusher');

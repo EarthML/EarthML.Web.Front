@@ -1,0 +1,9 @@
+{
+  "nprogress/": "nprogress/nprogress.*",
+  "requirejs/": [ "requirejs/require.js", "requirejs-text/text.js", "require-css/css.js" ],
+  "headroom/": "headroom.js/dist/headroom.js",
+  "classie/": [ "classie/lib/classie.js", "classie/lib/class_list_ployfill.js" ],
+  "font-awesome/fonts": [ "font-awesome/fonts" ],
+  "kolayout": [ "kolayout/dist" ],
+  "knockout": [ "knockout/build/output" ]
+}

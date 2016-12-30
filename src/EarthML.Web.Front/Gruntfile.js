@@ -150,16 +150,7 @@ module.exports = function (grunt) {
                 options: {
                     destPrefix: 'wwwroot/libs'
                 },
-                files: {
-                    // Keys are destinations (prefixed with `options.destPrefix`) 
-                    // Values are sources (prefixed with `options.srcPrefix`); One source per destination 
-                    // e.g. 'node_modules/chai/lib/chai.js' will be copied to 'test/js/libs/chai.js' 
-                    'nprogress/': 'nprogress/nprogress.*',
-                    "requirejs/": [ "requirejs/require.js","requirejs-text/text.js", "require-css/css.js"], 
-                    "headroom/": "headroom.js/dist/headroom.js",
-                    "classie/": ["classie/lib/classie.js", "classie/lib/class_list_ployfill.js"],
-                    "font-awesome/fonts":["font-awesome/fonts"],
-                }
+                files: grunt.file.readJSON("npmcopy.json")
             }
         }
 

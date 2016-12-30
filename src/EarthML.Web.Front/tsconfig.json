@@ -11,7 +11,11 @@
     "outDir": "wwwroot/libs/EarthML",
     "types": [ "modernizr" ],
     "moduleResolution": "node",
-    "traceResolution": true
+    "traceResolution": true,
+    "baseUrl": ".",
+    "paths": {
+      "kolayout/*": ["node_modules/kolayout/dist/typings/*"]
+    }
   },
   "exclude": [
     "node_modules",
