@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
+using System;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
 
 #if NET46
-using Microsoft.Practices.Unity;
+using System.Fabric;
 using Serilog;
 using SInnovations.ServiceFabric.RegistrationMiddleware.AspNetCore.Services;
 using SInnovations.ServiceFabric.Unity;
@@ -20,35 +19,32 @@ namespace EarthML.Web.Front
     {
         public static void Main(string[] args)
         {
-
             if (args.Contains("--serviceFabric"))
             {
 #if NET46
-
                 var log = new LoggerConfiguration()
                .MinimumLevel.Debug()
-               //  .WriteTo.Trace()
                .CreateLogger();
 
-
-                using (var container = new UnityContainer().AsFabricContainer())
+                using (var container = FabricRuntime.Create()
+                    .AsFabricContainer()
+                    .ConfigureLogging(new LoggerFactory().AddSerilog()))
                 {
-                    var loggerfac = new LoggerFactory() as ILoggerFactory;
-                    loggerfac.AddSerilog();
-                    container.RegisterInstance(loggerfac);
-                    container.RegisterInstance(new KestrelHostingServiceOptions { ServiceEndpointName = "ServiceEndpoint", ReverseProxyPath ="/" });
 
-                    container.WithStatelessService<KestrelHostingService<Startup>>("EarthMLFrontType");
-
-
-
+                    container.WithKestrelHosting<Startup>("EarthMLFrontType",
+                        new KestrelHostingServiceOptions
+                        {
+                            ServiceEndpointName = "ServiceEndpoint",
+                            ReverseProxyPath = "/"
+                        });
 
                     Thread.Sleep(Timeout.Infinite);
                 }
+
+#else
+                Console.WriteLine("Sorry, service fabric do not support dotnet core yet");
 #endif
-            }
-            else
-            {
+            } else {
 
                 var host = new WebHostBuilder()
                     .UseKestrel()
