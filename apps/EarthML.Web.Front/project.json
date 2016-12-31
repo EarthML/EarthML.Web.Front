@@ -18,18 +18,18 @@
   },
 
   "frameworks": {
-    "netcoreapp1.0": {
-      "imports": [
-        "dotnet5.6",
-        "portable-net45+win8"
-      ],
-      "dependencies": {
-        "Microsoft.NETCore.App": {
-          "version": "1.0.1",
-          "type": "platform"
-        }
-      }
-    },
+    //"netcoreapp1.0": {
+    //  "imports": [
+    //    "dotnet5.6",
+    //    "portable-net45+win8"
+    //  ],
+    //  "dependencies": {
+    //    "Microsoft.NETCore.App": {
+    //      "version": "1.0.1",
+    //      "type": "platform"
+    //    }
+    //  }
+    //},
     "net46": {
       "dependencies": {
         "S-Innovations.ServiceFabric.Unity": "1.0.0-*",
@@ -37,9 +37,6 @@
         "Unity": "4.0.1"
       }
     }
-  },
-  "runtimes": {
-    "win81-x64": {}
   },
   "buildOptions": {
     "emitEntryPoint": true,
