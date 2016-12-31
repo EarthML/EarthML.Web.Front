@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "WebApiContrib.Core.TagHelpers.Markdown": "1.0.0",   
+    "WebApiContrib.Core.TagHelpers.Markdown": "1.0.0",
     "Microsoft.AspNetCore.Diagnostics": "1.1.0",
     "Microsoft.AspNetCore.Mvc": "1.1.0",
     "Microsoft.AspNetCore.Server.IISIntegration": "1.1.0",
@@ -38,7 +38,9 @@
       }
     }
   },
-
+  "runtimes": {
+    "win81-x64": {}
+  },
   "buildOptions": {
     "emitEntryPoint": true,
     "preserveCompilationContext": true
