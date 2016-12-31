@@ -35,7 +35,11 @@ namespace EarthML.Web.Front
                         new KestrelHostingServiceOptions
                         {
                             ServiceEndpointName = "ServiceEndpoint",
-                            ReverseProxyPath = "/"
+                            ReverseProxyLocation = "/",
+                            GatewayOptions = new GatewayOptions
+                            {
+                                 ServerName = "www.earthml.com www.earthml.xyz earthml.xyz earthml.com"
+                            }
                         });
 
                     Thread.Sleep(Timeout.Infinite);
