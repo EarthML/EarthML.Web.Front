@@ -33,7 +33,7 @@
     "net46": {
       "dependencies": {
         "S-Innovations.ServiceFabric.Unity": "1.0.0-*",
-        "S-Innovations.ServiceFabric.RegistrationMiddleware.AspNetCore": "1.0.1-*",
+        "S-Innovations.ServiceFabric.RegistrationMiddleware.AspNetCore": "1.0.1-* ",
         "Unity": "4.0.1"
       }
     }
