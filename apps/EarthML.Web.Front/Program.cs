@@ -1,10 +1,9 @@
-﻿
-using System;
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using System.Threading;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Logging;
+using SInnovations.ServiceFabric.Gateway.Model;
 
 #if NET46
 using System.Fabric;
@@ -35,20 +34,28 @@ namespace EarthML.Web.Front
                         new KestrelHostingServiceOptions
                         {
                             ServiceEndpointName = "ServiceEndpoint",
-                            ReverseProxyLocation = "/",
                             GatewayOptions = new GatewayOptions
                             {
-                                 ServerName = "www.earthml.com www.earthml.xyz earthml.xyz earthml.com"
-                            }
+                                Key = "EarthML.com",
+                                ServerName = "www.earthml.com www.earthml.xyz earthml.xyz earthml.com local.earthml.com",
+                                ReverseProxyLocation = "/",
+                                Ssl = new SslOptions
+                                {   
+                                    Enabled = true,
+                                    SignerEmail = "info@earthml.com"
+                                },
+                            }   
                         });
 
                     Thread.Sleep(Timeout.Infinite);
                 }
-
+                    
 #else
                 Console.WriteLine("Sorry, service fabric do not support dotnet core yet");
 #endif
-            } else {
+            }
+            else
+            {
 
                 var host = new WebHostBuilder()
                     .UseKestrel()
